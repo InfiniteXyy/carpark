@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Context path="/">
+    <Resource name="jdbc/msg"
+              aut0="container"
+              type="javax.sql.DataSource"
+              username="root"
+              password="003010"
+              driverClassName="com.mysql.jdbc.Driver"
+              maxActive="20"
+              maxIdle="20"/>
+</Context>
