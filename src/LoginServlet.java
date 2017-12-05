@@ -1,3 +1,4 @@
+import MyConnector.SqlConnect;
 import data.user.User;
 
 import javax.servlet.ServletException;
@@ -16,6 +17,7 @@ public class LoginServlet extends HttpServlet {
         User user = new User();
         user.setEmail(email);
         user.setPassword(password);
+
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

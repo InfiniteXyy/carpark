@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Context path="/">
-    <Resource name="jdbc/sqlserver"
-              aut0="container"
+    <Resource name="jdbc/test"
+              auth="container"
               type="javax.sql.DataSource"
               username="root"
               password="003010"
               driverClassName="com.mysql.jdbc.Driver"
+              url="jdbc:mysql://localhost:3306/carOwner"
               maxActive="20"
               maxIdle="20"/>
 </Context>

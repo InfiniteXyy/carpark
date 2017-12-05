@@ -2,8 +2,9 @@
 <%@ page import="java.sql.*"%>
 <%@ page import="javax.sql.*"%>
 <%@ page import="javax.naming.*"%>
+
 <%!
-    final String JNDINAME = "jdbc/carOwner" ;
+    final String JNDINAME = "java:comp/env/jdbc/test" ;
 %>
 <%
     Connection conn = null ;
@@ -25,6 +26,7 @@
     }
     catch(Exception e)
     {
+        System.out.println("哈哈找不到数据库");
         System.out.println(e) ;
     }
 %>
