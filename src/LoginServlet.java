@@ -29,7 +29,7 @@ public class LoginServlet extends HttpServlet {
 
         switch (status) {
             case User.RIGHTPW:
-                dispatcher = request.getRequestDispatcher("main.jsp");
+                dispatcher = request.getRequestDispatcher("main.html");
                 break;
             case User.NOUSER:
                 dispatcher = request.getRequestDispatcher("register.html");
