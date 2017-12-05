@@ -6,6 +6,11 @@ public class User implements Serializable{
     private String email;
     private String password;
 
+    public static final int WRONGPW = -1;
+    public static final int RIGHTPW = 1;
+    public static final int NOUSER = 2;
+    public static final int SYSERROR = 3;
+
     public String getEmail() {
         return email;
     }

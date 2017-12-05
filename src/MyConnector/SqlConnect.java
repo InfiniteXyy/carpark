@@ -28,14 +28,24 @@ public class SqlConnect {
     public void putInfoIntoDB(User user) {
 
     }
-    public boolean checkInfoFromDB(User user) {
+    public int checkInfoFromDB(User user) {
         try {
             Statement statement = conn.createStatement();
-            ResultSet resultSet = statement.executeQuery("SELECT Password FROM table_name WHERE Email="+user.getEmail());
-
+            ResultSet resultSet = statement.executeQuery("SELECT * FROM table_name");
+            while (resultSet.next()) {
+                if (resultSet.getString("Email").equals(user.getEmail())) {
+                    if (resultSet.getString("Password").equals(user.getPassword())) {
+                        return User.RIGHTPW;
+                    } else {
+                        return User.WRONGPW;
+                    }
+                }
+            }
+            return User.NOUSER;
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        return User.SYSERROR;
     }
 
     public void endDB() {

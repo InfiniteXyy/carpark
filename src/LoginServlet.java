@@ -1,6 +1,7 @@
 import MyConnector.SqlConnect;
 import data.user.User;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -18,6 +19,31 @@ public class LoginServlet extends HttpServlet {
         user.setEmail(email);
         user.setPassword(password);
 
+        request.setAttribute("name", user.getEmail());
+        //链接数据库，检查是否存在user信息
+        SqlConnect sqlConnect = new SqlConnect();
+        sqlConnect.startDB();
+        RequestDispatcher dispatcher;
+
+        int status = sqlConnect.checkInfoFromDB(user);
+
+        switch (status) {
+            case User.RIGHTPW:
+                dispatcher = request.getRequestDispatcher("main.jsp");
+                break;
+            case User.NOUSER:
+                dispatcher = request.getRequestDispatcher("register.html");
+                break;
+            case User.WRONGPW:
+                dispatcher = request.getRequestDispatcher("index.html");
+                break;
+            default:
+                dispatcher = request.getRequestDispatcher("index.html");
+                break;
+        }
+
+        dispatcher.forward(request, response);
+        sqlConnect.endDB();
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

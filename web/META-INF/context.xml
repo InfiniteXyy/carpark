@@ -6,7 +6,5 @@
               username="root"
               password="003010"
               driverClassName="com.mysql.jdbc.Driver"
-              url="jdbc:mysql://localhost:3306/carOwner"
-              maxActive="20"
-              maxIdle="20"/>
+              url="jdbc:mysql://localhost:3306/carOwner"/>
 </Context>
