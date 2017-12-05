@@ -2,9 +2,34 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>注册</title>
-</head>
-<body>
+    <title>车位管理系统v1.0</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.2/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="style/css/login.css">
 
+</head>
+
+<body>
+<div class="container">
+    <form class="form-signin" action="LoginServlet" method="post">
+        <h2 class="form-signin-heading">请注册</h2>
+        <input type="email" name="inputEmail" class="form-control" placeholder="Email address" autofocus>
+        <input type="password" id="password1" name="inputPassword" class="form-control" placeholder="Password">
+        <input type="password" id="password2" class="form-control" onkeyup="checkPw()" placeholder="Passwordagain">
+        <button class="btn btn-lg btn-primary btn-block" id="btn" type="submit" disabled="disabled">立即注册</button>
+
+    </form>
+</div>
 </body>
+<script>
+    function checkPw() {
+        var pw1 = document.getElementById("password1").innerText;
+        var pw2 = document.getElementById("password2").innerText;
+        if (pw1 == pw2) {
+            document.getElementById("btn").disabled=false;
+        } else {
+            document.getElementById("btn").setAttribute("disabled", "disabled")
+        }
+    }
+</script>
 </html>

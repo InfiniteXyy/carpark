@@ -1,3 +1,11 @@
+<%--
+  Created by IntelliJ IDEA.
+  User: xyy
+  Date: 2017/12/5
+  Time: 下午11:20
+  To change this template use File | Settings | File Templates.
+--%>
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -7,19 +15,19 @@
     <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.2/css/bootstrap.min.css" />
     <link rel="stylesheet" href="style/css/styles.css">
     <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" />
-	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
     <script src="http://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.2/js/bootstrap.min.js"></script>
 </head>
 <body>
-	<!-- 导航栏 -->
+<!-- 导航栏 -->
 <nav class="navbar navbar-fixed-top navbar-dark bg-primary">
     <button class="navbar-toggler hidden-sm-up pull-right" type="button" data-toggle="collapse" data-target="#collapsingNavbar">
         ☰
     </button>
-    <a class="navbar-brand" href="#">Xyy</a>
+    <a class="navbar-brand" href="#"><%=request.getAttribute("name")%></a>
     <div class="collapse navbar-toggleable-xs" id="collapsingNavbar">
         <ul class="nav navbar-nav pull-right">
-        	<li class="nav-item">
+            <li class="nav-item">
                 <a class="nav-link" href="#myInfo" data-toggle="collapse">数据显示/关闭</a>
             </li>
             <li class="nav-item active">
@@ -38,25 +46,25 @@
     </div>
 </nav>
 <div class="container-fluid" id="main">
-	
-	<div class="row row-offcanvas row-offcanvas-left">
-		<!-- 侧边栏 -->
-		<div class="col-md-3 col-lg-2 sidebar-offcanvas" id="sidebar" role="navigation">
-	        <ul class="nav nav-pills nav-stacked">
-	            <li class="nav-item"><a class="nav-link" href="#">用户设置</a></li>
-	            <li class="nav-item"><a class="nav-link" href="#">关于网站</a></li>
-	            <li class="nav-item"><a class="nav-link" href="#">关于合作</a></li>
-	            <li class="nav-item"><a class="nav-link" href="#">联系我</a></li>
-	        </ul>
-	    </div>
-		<div class="col-md-9 col-lg-10 main">
-			<h1 class="display-1 hidden-xs-down">
-            停车场管理系统
+
+    <div class="row row-offcanvas row-offcanvas-left">
+        <!-- 侧边栏 -->
+        <div class="col-md-3 col-lg-2 sidebar-offcanvas" id="sidebar" role="navigation">
+            <ul class="nav nav-pills nav-stacked">
+                <li class="nav-item"><a class="nav-link" href="#">用户设置</a></li>
+                <li class="nav-item"><a class="nav-link" href="#">关于网站</a></li>
+                <li class="nav-item"><a class="nav-link" href="#">关于合作</a></li>
+                <li class="nav-item"><a class="nav-link" href="#">联系我</a></li>
+            </ul>
+        </div>
+        <div class="col-md-9 col-lg-10 main">
+            <h1 class="display-1 hidden-xs-down">
+                停车场管理系统
             </h1>
             <!-- 最上部分的提示栏 -->
             <p class="lead">version1.0   Thanks to Bootstrap4 demo</p>
 
-			<!-- 这是用于警示的信息 -->
+            <!-- 这是用于警示的信息 -->
             <div class="alert alert-warning fade collapse" role="alert" id="myAlert">
                 <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                     <span aria-hidden="true">×</span>
@@ -146,8 +154,8 @@
                     </p>
                 </div>
             </div>
-		</div>
-	</div>
+        </div>
+    </div>
 </div>
 
 </body>
