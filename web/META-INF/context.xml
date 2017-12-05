@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Context path="/">
-    <Resource name="jdbc/msg"
+    <Resource name="jdbc/sqlserver"
               aut0="container"
               type="javax.sql.DataSource"
               username="root"
