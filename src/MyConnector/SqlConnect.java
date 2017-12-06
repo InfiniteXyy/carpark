@@ -26,8 +26,17 @@ public class SqlConnect {
     }
 
     public void putInfoIntoDB(User user) {
+        Statement statement = null;
+        try {
+            statement = conn.createStatement();
+            statement.executeUpdate("INSERT INTO table_name (Email, Password) VALUES "
+                    +"('"+user.getEmail()+"','"+user.getPassword()+"')");
 
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
+
     public int checkInfoFromDB(User user) {
         try {
             Statement statement = conn.createStatement();

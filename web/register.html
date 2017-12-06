@@ -6,30 +6,32 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.2/css/bootstrap.min.css" />
     <link rel="stylesheet" href="style/css/login.css">
-
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 </head>
 
 <body>
 <div class="container">
-    <form class="form-signin" action="LoginServlet" method="post">
+    <form class="form-signin" action="RegisterServlet" method="post" id="myform">
         <h2 class="form-signin-heading">请注册</h2>
         <input type="email" name="inputEmail" class="form-control" placeholder="Email address" autofocus>
         <input type="password" id="password1" name="inputPassword" class="form-control" placeholder="Password">
-        <input type="password" id="password2" class="form-control" onkeyup="checkPw()" placeholder="Passwordagain">
-        <button class="btn btn-lg btn-primary btn-block" id="btn" type="submit" disabled="disabled">立即注册</button>
+        <input type="password" id="password2" class="form-control" placeholder="Password again">
+        <div style="color: #fe4e40;margin: 5px;" id="tip"></div>
+        <button class="btn btn-lg btn-primary btn-block" id="btn" onclick="check()">立即注册</button>
 
     </form>
 </div>
 </body>
 <script>
-    function checkPw() {
-        var pw1 = document.getElementById("password1").innerText;
-        var pw2 = document.getElementById("password2").innerText;
-        if (pw1 == pw2) {
-            document.getElementById("btn").disabled=false;
+
+    function check() {
+        var value1=$("#password1").val();
+        var value2=$("#password2").val();
+        if (value1===value2) {
+            $("#myform").submit();
         } else {
-            document.getElementById("btn").setAttribute("disabled", "disabled")
+            $("#tip").html("密码不一致!").show();
         }
-    }
+    };
 </script>
 </html>
