@@ -10,6 +10,7 @@ import java.sql.*;
 public class SqlConnect {
     private Connection conn;
 
+    private Statement statement;
     private static final String DBNAME = "java:comp/env/jdbc/test";
 
     //通过调用一次DatabaseConnection就连接了数据库
@@ -20,13 +21,13 @@ public class SqlConnect {
             //找到这个数据库
             DataSource ds = (DataSource)ctx.lookup(DBNAME);
             conn = ds.getConnection();
+
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
     public void putInfoIntoDB(User user) {
-        Statement statement = null;
         try {
             statement = conn.createStatement();
             statement.executeUpdate("INSERT INTO table_name (Email, Password) VALUES "
@@ -39,7 +40,7 @@ public class SqlConnect {
 
     public int checkInfoFromDB(User user) {
         try {
-            Statement statement = conn.createStatement();
+            statement = conn.createStatement();
             ResultSet resultSet = statement.executeQuery("SELECT * FROM table_name");
             while (resultSet.next()) {
                 if (resultSet.getString("Email").equals(user.getEmail())) {
@@ -57,6 +58,19 @@ public class SqlConnect {
         return User.SYSERROR;
     }
 
+    public int getInfoNums() {
+        int users = 0;
+        try {
+            statement = conn.createStatement();
+            ResultSet resultSet = statement.executeQuery("SELECT * FROM table_name");
+            while (resultSet.next()) {
+                users++;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return users;
+    }
     public void endDB() {
         try {
             conn.close();

@@ -23,7 +23,15 @@
       </label>
     </div>
     <button class="btn btn-lg btn-primary btn-block" type="submit">登录</button>
+      <a class="btn btn-lg btn-info btn-block" href="register.html">注册</a>
   </form>
 </div>
 </body>
+
+<%
+  String name = request.getParameter("newName");
+  if (name != null) {
+
+  }
+%>
 </html>
