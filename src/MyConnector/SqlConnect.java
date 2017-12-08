@@ -1,5 +1,6 @@
 package MyConnector;
 
+import data.Info;
 import data.user.User;
 
 import javax.naming.Context;
@@ -58,18 +59,19 @@ public class SqlConnect {
         return User.SYSERROR;
     }
 
-    public int getInfoNums() {
-        int users = 0;
+    public Info getInfoNums() {
+        Info info = new Info();
+
         try {
             statement = conn.createStatement();
             ResultSet resultSet = statement.executeQuery("SELECT * FROM table_name");
             while (resultSet.next()) {
-                users++;
+                info.userNum++;
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return users;
+        return info;
     }
     public void endDB() {
         try {

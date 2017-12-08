@@ -1,4 +1,5 @@
-<%@ page import="MyConnector.SqlConnect" %><%--
+<%@ page import="MyConnector.SqlConnect" %>
+<%@ page import="data.Info" %><%--
   Created by IntelliJ IDEA.
   User: xyy
   Date: 2017/12/5
@@ -22,7 +23,7 @@
 <%
     SqlConnect sqlConnect = new SqlConnect();
     sqlConnect.startDB();
-    int users = sqlConnect.getInfoNums();
+    Info info = sqlConnect.getInfoNums();
     sqlConnect.endDB();
 %>
 <!-- 导航栏 -->
@@ -88,7 +89,7 @@
                                 <i class="fa fa-user fa-5x"></i>
                             </div>
                             <h6 class="text-uppercase">Users</h6>
-                            <h1 class="display-1"><%=users%></h1>
+                            <h1 class="display-1"><%=info.userNum%></h1>
                         </div>
                     </div>
                 </div>
