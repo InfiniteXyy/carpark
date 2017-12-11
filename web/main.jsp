@@ -1,5 +1,7 @@
 <%@ page import="MyConnector.SqlConnect" %>
-<%@ page import="data.Info" %><%--
+<%@ page import="data.Info" %>
+<%@ page import="java.sql.ResultSet" %>
+<%@ page import="java.sql.SQLException" %><%--
   Created by IntelliJ IDEA.
   User: xyy
   Date: 2017/12/5
@@ -23,8 +25,8 @@
 <%
     SqlConnect sqlConnect = new SqlConnect();
     sqlConnect.startDB();
-    Info info = sqlConnect.getInfoNums();
-    sqlConnect.endDB();
+    Info info = sqlConnect.getInfo();
+    sqlConnect.endStmt();
 %>
 <!-- 导航栏 -->
 <nav class="navbar navbar-fixed-top navbar-dark bg-primary">
@@ -100,7 +102,7 @@
                                 <i class="fa fa-list fa-4x"></i>
                             </div>
                             <h6 class="text-uppercase">Lots</h6>
-                            <h1 class="display-1">87</h1>
+                            <h1 class="display-1"><%=info.lotNum%></h1>
                         </div>
                     </div>
                 </div>
@@ -111,7 +113,7 @@
                                 <i class="fa fa-twitter fa-5x"></i>
                             </div>
                             <h6 class="text-uppercase">Cars</h6>
-                            <h1 class="display-1">125</h1>
+                            <h1 class="display-1"><%=info.carNum%></h1>
                         </div>
                     </div>
                 </div>
@@ -146,20 +148,24 @@
                                 </tr>
                                 </thead>
                                 <tbody>
+                                <%
+                                ResultSet rs = sqlConnect.executeQuery("select * from carLot");
+                                try {
+                                    while (rs.next()) {
+                                %>
                                 <tr>
-                                    <td>1,001</td>
-                                    <td>Xyy</td>
-                                    <td>bootstrap</td>
-                                    <td>17.12.2</td>
-                                    <td>$100</td>
+                                    <td><%= rs.getInt(1)%></td>
+                                    <td><%= rs.getString(2)%></td>
+                                    <td><%= rs.getString(3)%></td>
+                                    <td><%= rs.getDate(4).toString()%></td>
+                                    <td><%= rs.getInt(5)%></td>
                                 </tr>
-                                <tr>
-                                    <td>1,002</td>
-                                    <td>Xyy2</td>
-                                    <td>JavaScript</td>
-                                    <td>17.12.3</td>
-                                    <td>$200</td>
-                                </tr>
+                                <%
+                                    }
+                                } catch (SQLException e) {
+                                    e.printStackTrace();
+                                }
+                                %>
                                 </tbody>
                             </table>
                         </div>
@@ -222,97 +228,31 @@
                 <div role="tabpanel" class="tab-pane fade" id="messages1">
                     <h1>租车请求</h1><br>
                     <div class="card-columns">
+                        <%
+                            rs = sqlConnect.executeQuery("select * from cars");
+                            try {
+                                while (rs.next()) {
+                        %>
                         <div class="carditems">
                             <div class="card text-left">
-                                <img class="card-img-top" src="src/jiangge.jpg" width="100%">
+                                <img class="card-img-top" src="/imgs/<%=rs.getString(2)%>" width="100%">
                                 <div class="card-block">
-                                    <h4 class="card-title">你如何看待刘鑫</h4>
-                                    <p href="" class="card-text">事件链接</p>
-                                    <div class="btn-group">
-                                        <button onclick="goToRoom('jiangge', false)" class="btn btn-info">有罪</button>
-                                        <button onclick="goToRoom('jiangge', true)" class="btn btn-secondary">无罪</button>
-                                    </div>
+                                    <h4 class="card-title"><%=rs.getString(1)%></h4>
+                                    <p class="card-text">From <%=rs.getString(3)%></p>
+                                        <button class="btn btn-primary">确认</button>
+                                        <button class="btn btn-secondary">添加到愿望单</button>
                                 </div>
                             </div>
                         </div>
+                        <%
+                                }
+                            } catch (SQLException e) {
+                                e.printStackTrace();
+                            }
+                            sqlConnect.endStmt();
+                            sqlConnect.endDB();
 
-                        <div class="carditems">
-                            <div class="card text-center">
-                                <div class="card-header">
-                                    自由聊天室
-                                </div>
-                                <div class="card-block">
-                                    <h4 class="card-title">无题</h4>
-                                    <p class="card-text">没有人喜欢孤独，只是不愿失望。</p>
-                                    <button onclick="goToRoom('free', null)" class="btn btn-success">立即加入</button>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="carditems">
-                            <div class="card text-left">
-                                <img class="card-img-top" src="src/learn.jpeg" width="100%">
-                                <div class="card-block">
-                                    <h4 class="card-title">你觉得学习是为钱吗</h4>
-                                    <div class="btn-group">
-                                        <div class="btn-group">
-                                            <button onclick="goToRoom('money', false)" class="btn btn-info">不是</button>
-                                            <button onclick="goToRoom('money', true)" class="btn btn-secondary">是的</button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="carditems">
-                            <div class="card text-center">
-                                <div class="card-header">
-                                    自由聊天室
-                                </div>
-                                <div class="card-block">
-                                    <h4 class="card-title">学习</h4>
-                                    <p class="card-text">以一种特别的方式和你的同学交流</p>
-                                    <button onclick="goToRoom('learn', null)" class="btn btn-success">立即加入</button>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="carditems">
-                            <div class="card">
-                                <img class="card-img" src="src/wallpaper.png" width="100%" style="opacity: 0.3;">
-                                <div class="card-img-overlay">
-                                    <h4 class="card-title">夏目漱石</h4>
-                                    <p class="card-text"><br><br><br><br>人就在不断的选择的矛盾中，戴上面具，焚烧过去，武装自己。</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="carditems">
-                            <div class="card text-center ">
-                                <div class="card-header">
-                                    讨论聊天室
-                                </div>
-                                <div class="card-block">
-                                    <h4 class="card-title">编程</h4>
-                                    <p class="card-text">JavaScript是世界上最好的语言？</p>
-                                    <button onclick="goToRoom('coding', null)" class="btn btn-success">立即加入</button>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="carditems">
-                            <div class="card text-left">
-                                <img class="card-img-top" src="src/ximengyao.jpg" width="100%">
-                                <div class="card-block">
-                                    <h4 class="card-title">你如何看待奚梦瑶摔倒</h4>
-                                    <p href="" class="card-text">事件链接</p>
-                                    <div class="btn-group">
-                                        <button onclick="goToRoom('mengyao', false)" class="btn btn-info">应当批评</button>
-                                        <button onclick="goToRoom('mengyao', true)" class="btn btn-secondary">应当鼓励</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
+                        %>
                         <div class="carditems">
                             <div class="card card-inverse" style="background-color: #333; border-color: #333;">
                                 <div class="card-block">

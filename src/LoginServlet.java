@@ -42,6 +42,7 @@ public class LoginServlet extends HttpServlet {
         }
 
         dispatcher.forward(request, response);
+        sqlConnect.endStmt();
         sqlConnect.endDB();
     }
 

@@ -26,6 +26,7 @@ public class RegisterServlet extends HttpServlet {
         RequestDispatcher dispatcher;
         dispatcher = request.getRequestDispatcher("index.jsp");
 
+        sqlConnect.endStmt();
         sqlConnect.endDB();
         request.setAttribute("newName", user.getEmail());
         dispatcher.forward(request, response);

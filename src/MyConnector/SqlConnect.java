@@ -9,9 +9,9 @@ import javax.sql.DataSource;
 import java.sql.*;
 
 public class SqlConnect {
-    private Connection conn;
+    private Connection conn = null;
+    private Statement statement = null;
 
-    private Statement statement;
     private static final String DBNAME = "java:comp/env/jdbc/test";
 
     //通过调用一次DatabaseConnection就连接了数据库
@@ -59,7 +59,7 @@ public class SqlConnect {
         return User.SYSERROR;
     }
 
-    public Info getInfoNums() {
+    public Info getInfo() {
         Info info = new Info();
 
         try {
@@ -68,14 +68,41 @@ public class SqlConnect {
             while (resultSet.next()) {
                 info.userNum++;
             }
+            resultSet = statement.executeQuery("SELECT * FROM carLot");
+            while (resultSet.next()) {
+                info.lotNum++;
+            }
+            resultSet = statement.executeQuery("SELECT * FROM cars");
+            while (resultSet.next()) {
+                info.carNum++;
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         }
         return info;
     }
+
+    public ResultSet executeQuery(String sql) {
+        ResultSet rs = null;
+        try {
+            statement = conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,ResultSet.CONCUR_READ_ONLY);
+            rs = statement.executeQuery(sql);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return rs;
+    }
     public void endDB() {
         try {
             conn.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void endStmt() {
+        try {
+            statement.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
