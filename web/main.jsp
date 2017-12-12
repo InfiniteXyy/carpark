@@ -33,7 +33,7 @@
     <button class="navbar-toggler hidden-sm-up pull-right" type="button" data-toggle="collapse" data-target="#collapsingNavbar">
         ☰
     </button>
-    <a class="navbar-brand" href="#"><%=request.getAttribute("name")%></a>
+    <a class="navbar-brand" href="#"><%=request.getParameter("inputEmail")%></a>
     <div class="collapse navbar-toggleable-xs" id="collapsingNavbar">
         <ul class="nav navbar-nav pull-right">
             <li class="nav-item">
@@ -149,7 +149,7 @@
                                 </thead>
                                 <tbody>
                                 <%
-                                ResultSet rs = sqlConnect.executeQuery("select * from carLot");
+                                ResultSet rs = sqlConnect.executeQuery("select * from Carports");
                                 try {
                                     while (rs.next()) {
                                 %>
@@ -229,7 +229,7 @@
                     <h1>租车请求</h1><br>
                     <div class="card-columns">
                         <%
-                            rs = sqlConnect.executeQuery("select * from cars");
+                            rs = sqlConnect.executeQuery("select * from Cars");
                             try {
                                 while (rs.next()) {
                         %>

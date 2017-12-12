@@ -24,7 +24,7 @@ public class RegisterServlet extends HttpServlet {
         //这里应该检查是否有重复的用户存在
         sqlConnect.putInfoIntoDB(user);
         RequestDispatcher dispatcher;
-        dispatcher = request.getRequestDispatcher("index.jsp");
+        dispatcher = request.getRequestDispatcher("login.jsp");
 
         sqlConnect.endStmt();
         sqlConnect.endDB();

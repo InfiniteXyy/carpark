@@ -13,7 +13,7 @@
 <div class="container">
     <form class="form-signin" action="RegisterServlet" method="post" id="myform">
         <h2 class="form-signin-heading">请注册</h2>
-        <input type="email" name="inputEmail" class="form-control" placeholder="Email address" autofocus>
+        <input type="email" name="inputEmail" class="form-control" placeholder="Email address" onblur="validate()" autofocus>
         <input type="password" id="password1" name="inputPassword" class="form-control" placeholder="Password">
         <input type="password" id="password2" class="form-control" placeholder="Password again">
         <div style="color: #fe4e40;margin: 5px;" id="tip"></div>
@@ -32,6 +32,28 @@
         } else {
             $("#tip").html("密码不一致!").show();
         }
-    };
+    }
+
+    function validate() {
+        var xmlHttp = new XMLHttpRequest();
+        var email = document.getElementsByName("inputEmail")[0].innerText;
+        xmlHttp.open("get","RegisterServlet?Email="+email, true);
+        xmlHttp.onreadystatechange = function () {
+            if(xmlHttp.readyState == 4) {
+                if(xmlHttp.status == 200) {
+                    var result = xmlHttp.responseText;//接受返回的字符串
+                    if(result == 'yes') {
+                        document.getElementById("info").innerHTML="<span style='color: #91ff79'>可以使用！";
+                    }else {
+                        document.getElementById("info").innerHTML="<span style='color: #ff461b'>该用户名已存在！";
+                    }
+                } else {
+                    alert("服务器繁忙，请稍候重试！");
+                }
+            }
+        };
+        xmlHttp.send();
+    }
+
 </script>
 </html>

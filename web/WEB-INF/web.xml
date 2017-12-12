@@ -4,6 +4,9 @@
            xsi:schemaLocation="http://java.sun.com/xml/ns/javaee
 		  http://java.sun.com/xml/ns/javaee/web-app_3_1.xsd"
            version="3.1">
+    <welcome-file-list>
+        <welcome-file>login.jsp</welcome-file>
+    </welcome-file-list>
 <resource-ref>
     <res-ref-name>jdbc/sqlserver</res-ref-name>
     <res-type>javax.sql.DataSource</res-type>

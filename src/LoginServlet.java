@@ -12,36 +12,31 @@ import java.io.IOException;
 @WebServlet(name = "LoginServlet", urlPatterns = {"/LoginServlet"})
 public class LoginServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        response.setContentType("text/html;charset=utf-8");
         String email = request.getParameter("inputEmail");
         String password = request.getParameter("inputPassword");
         User user = new User();
         user.setEmail(email);
         user.setPassword(password);
 
-        request.setAttribute("name", user.getEmail());
         //链接数据库，检查是否存在user信息
         SqlConnect sqlConnect = new SqlConnect();
         sqlConnect.startDB();
-        RequestDispatcher dispatcher;
 
         int status = sqlConnect.checkInfoFromDB(user);
-
         switch (status) {
             case User.RIGHTPW:
-                dispatcher = request.getRequestDispatcher("main.jsp");
+                response.getWriter().print("success");
                 break;
             case User.NOUSER:
-                dispatcher = request.getRequestDispatcher("register.html");
+                response.getWriter().print("没有找到该用户！");
                 break;
             case User.WRONGPW:
-                dispatcher = request.getRequestDispatcher("index.jsp");
-                break;
-            default:
-                dispatcher = request.getRequestDispatcher("index.jsp");
+                response.getWriter().print("密码错误！");
                 break;
         }
 
-        dispatcher.forward(request, response);
+
         sqlConnect.endStmt();
         sqlConnect.endDB();
     }

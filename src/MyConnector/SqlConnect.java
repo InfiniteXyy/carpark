@@ -31,7 +31,7 @@ public class SqlConnect {
     public void putInfoIntoDB(User user) {
         try {
             statement = conn.createStatement();
-            statement.executeUpdate("INSERT INTO table_name (Email, Password) VALUES "
+            statement.executeUpdate("INSERT INTO Users (user_email, user_password) VALUES "
                     +"('"+user.getEmail()+"','"+user.getPassword()+"')");
 
         } catch (SQLException e) {
@@ -42,17 +42,15 @@ public class SqlConnect {
     public int checkInfoFromDB(User user) {
         try {
             statement = conn.createStatement();
-            ResultSet resultSet = statement.executeQuery("SELECT * FROM table_name");
-            while (resultSet.next()) {
-                if (resultSet.getString("Email").equals(user.getEmail())) {
-                    if (resultSet.getString("Password").equals(user.getPassword())) {
-                        return User.RIGHTPW;
-                    } else {
-                        return User.WRONGPW;
-                    }
-                }
+            ResultSet resultSet = statement.executeQuery("SELECT user_password FROM Users WHERE user_email = '"
+                + user.getEmail()+"'");
+            if (!resultSet.next()) {
+                return User.NOUSER;
             }
-            return User.NOUSER;
+            resultSet.first();
+            if (resultSet.getString(1).equals(user.getPassword())) {
+                return User.RIGHTPW;
+            } else return User.WRONGPW;
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -64,15 +62,15 @@ public class SqlConnect {
 
         try {
             statement = conn.createStatement();
-            ResultSet resultSet = statement.executeQuery("SELECT * FROM table_name");
+            ResultSet resultSet = statement.executeQuery("SELECT user_email FROM Users");
             while (resultSet.next()) {
                 info.userNum++;
             }
-            resultSet = statement.executeQuery("SELECT * FROM carLot");
+            resultSet = statement.executeQuery("SELECT carport_id FROM Carports");
             while (resultSet.next()) {
                 info.lotNum++;
             }
-            resultSet = statement.executeQuery("SELECT * FROM cars");
+            resultSet = statement.executeQuery("SELECT car_id FROM Cars");
             while (resultSet.next()) {
                 info.carNum++;
             }
@@ -92,6 +90,7 @@ public class SqlConnect {
         }
         return rs;
     }
+
     public void endDB() {
         try {
             conn.close();

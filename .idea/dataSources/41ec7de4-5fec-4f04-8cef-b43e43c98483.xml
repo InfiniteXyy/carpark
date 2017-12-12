@@ -915,66 +915,71 @@
       <Charset>utf8mb4</Charset>
       <DefaultForCharset>0</DefaultForCharset>
     </collation>
-    <table id="231" parent="2" name="carLot">
+    <table id="231" parent="2" name="Carports">
       <Engine>InnoDB</Engine>
     </table>
-    <table id="232" parent="2" name="cars">
+    <table id="232" parent="2" name="Cars">
       <Engine>InnoDB</Engine>
     </table>
-    <table id="233" parent="2" name="table_name">
+    <table id="233" parent="2" name="Users">
       <Engine>InnoDB</Engine>
     </table>
-    <column id="234" parent="231" name="num">
+    <column id="234" parent="231" name="carport_id">
       <Position>1</Position>
       <DataType>int(11)|0</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="235" parent="231" name="nickName">
+    <column id="235" parent="231" name="carport_owner">
       <Position>2</Position>
       <DataType>char(30)|0</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="236" parent="231" name="state">
+    <column id="236" parent="231" name="carport_state">
       <Position>3</Position>
       <DataType>char(30)|0</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="237" parent="231" name="date">
+    <column id="237" parent="231" name="carport_date">
       <Position>4</Position>
       <DataType>date|0</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="238" parent="231" name="price">
+    <column id="238" parent="231" name="carport_price">
       <Position>5</Position>
       <DataType>int(11)|0</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="239" parent="232" name="carName">
+    <column id="239" parent="232" name="car_id">
       <Position>1</Position>
-      <DataType>char(20)|0</DataType>
+      <DataType>int(11)|0</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="240" parent="232" name="carPic">
+    <column id="240" parent="232" name="car_picture">
       <Position>2</Position>
       <DataType>char(20)|0</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="241" parent="232" name="carOwner">
+    <column id="241" parent="232" name="car_owner">
       <Position>3</Position>
       <DataType>char(20)|0</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="242" parent="233" name="Email">
+    <column id="242" parent="232" name="car_name">
+      <Position>4</Position>
+      <DataType>char(20)|0</DataType>
+      <ColumnKind>normal</ColumnKind>
+    </column>
+    <column id="243" parent="233" name="user_email">
       <Position>1</Position>
       <DataType>char(30)|0</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="243" parent="233" name="Password">
+    <column id="244" parent="233" name="user_password">
       <Position>2</Position>
       <DataType>char(20)|0</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="244" parent="233" name="nickName">
+    <column id="245" parent="233" name="user_nickname">
       <Position>3</Position>
       <DataType>char(20)|0</DataType>
       <ColumnKind>normal</ColumnKind>
