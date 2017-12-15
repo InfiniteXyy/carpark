@@ -17,42 +17,46 @@
         <input type="password" id="password1" name="inputPassword" class="form-control" placeholder="Password">
         <input type="password" id="password2" class="form-control" placeholder="Password again">
         <div style="color: #fe4e40;margin: 5px;" id="tip"></div>
+        <div style="color: #fe06aa;margin: 5px;" id="tip2"></div>
         <button class="btn btn-lg btn-primary btn-block" id="btn" onclick="check()">立即注册</button>
 
     </form>
 </div>
 </body>
 <script>
-
+    var isOK = false;
     function check() {
         var value1=$("#password1").val();
         var value2=$("#password2").val();
         if (value1===value2) {
-            $("#myform").submit();
+            if (isOK) $("#myform").submit();
         } else {
-            $("#tip").html("密码不一致!").show();
+            $("#tip2").html("密码不一致!").show();
         }
     }
 
     function validate() {
         var xmlHttp = new XMLHttpRequest();
-        var email = document.getElementsByName("inputEmail")[0].innerText;
-        xmlHttp.open("get","RegisterServlet?Email="+email, true);
+        var email = document.getElementsByName("inputEmail")[0].value;
+        xmlHttp.open("post","/RegisterServlet", true);
+        xmlHttp.setRequestHeader("Content-type","application/x-www-form-urlencoded")
         xmlHttp.onreadystatechange = function () {
-            if(xmlHttp.readyState == 4) {
-                if(xmlHttp.status == 200) {
+            if (xmlHttp.readyState == 4) {
+                if (xmlHttp.status == 200) {
                     var result = xmlHttp.responseText;//接受返回的字符串
-                    if(result == 'yes') {
-                        document.getElementById("info").innerHTML="<span style='color: #91ff79'>可以使用！";
-                    }else {
-                        document.getElementById("info").innerHTML="<span style='color: #ff461b'>该用户名已存在！";
+                    if (result == "ok") {
+                        document.getElementById("tip").innerText="可以注册！";
+                        isOK = true;
+                    } else {
+                        document.getElementById("tip").innerText="重复用户名！";
+                        isOK = false;
                     }
                 } else {
                     alert("服务器繁忙，请稍候重试！");
                 }
             }
         };
-        xmlHttp.send();
+        xmlHttp.send("inputEmail="+email);
     }
 
 </script>

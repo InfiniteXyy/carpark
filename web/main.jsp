@@ -99,7 +99,7 @@
                     <div class="card card-inverse card-danger">
                         <div class="card-block bg-danger">
                             <div class="rotate">
-                                <i class="fa fa-list fa-4x"></i>
+                                <i class="fa fa-star fa-4x"></i>
                             </div>
                             <h6 class="text-uppercase">Lots</h6>
                             <h1 class="display-1"><%=info.lotNum%></h1>
@@ -110,7 +110,7 @@
                     <div class="card card-inverse card-info">
                         <div class="card-block bg-info">
                             <div class="rotate">
-                                <i class="fa fa-twitter fa-5x"></i>
+                                <i class="fa fa-car fa-5x"></i>
                             </div>
                             <h6 class="text-uppercase">Cars</h6>
                             <h1 class="display-1"><%=info.carNum%></h1>
@@ -121,7 +121,7 @@
                     <div class="card card-inverse card-warning">
                         <div class="card-block bg-warning">
                             <div class="rotate">
-                                <i class="fa fa-share fa-5x"></i>
+                                <i class="fa fa-commenting fa-5x"></i>
                             </div>
                             <h6 class="text-uppercase">News</h6>
                             <h1 class="display-1">36</h1>

@@ -3,7 +3,7 @@ package data.lots;
 import java.io.Serializable;
 import java.util.Date;
 
-public class carLot implements Serializable{
+public class Carpark implements Serializable{
     private int num;
 
     private int price;
@@ -14,7 +14,7 @@ public class carLot implements Serializable{
 
     private Date time;
 
-    public carLot() {
+    public Carpark() {
     }
 
     public int getNum() {

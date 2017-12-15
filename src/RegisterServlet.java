@@ -22,14 +22,13 @@ public class RegisterServlet extends HttpServlet {
         sqlConnect.startDB();
 
         //这里应该检查是否有重复的用户存在
-        sqlConnect.putInfoIntoDB(user);
-        RequestDispatcher dispatcher;
-        dispatcher = request.getRequestDispatcher("login.jsp");
+        int status = sqlConnect.checkInfoFromDB(user);
+
 
         sqlConnect.endStmt();
         sqlConnect.endDB();
         request.setAttribute("newName", user.getEmail());
-        dispatcher.forward(request, response);
+
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
