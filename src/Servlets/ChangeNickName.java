@@ -1,4 +1,6 @@
-import MyConnector.SqlConnect;
+package Servlets;
+
+import connecter.SqlConnect;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -9,7 +11,7 @@ import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-@WebServlet(name = "ChangeNickName", urlPatterns = {"/ChangeNickName"})
+@WebServlet(name = "Servlets.ChangeNickName", urlPatterns = {"/Servlets.ChangeNickName"})
 public class ChangeNickName extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String nickName = request.getParameter("nickName");

@@ -1,8 +1,9 @@
 package data;
 
-import MyConnector.SqlConnect;
+import connecter.SqlConnect;
 import data.park.Car;
 import data.park.Carport;
+import data.info.Info;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -16,7 +17,7 @@ public class GroundUpdater {
     }
 
     public ArrayList<Carport> updateCarports() {
-        ResultSet resultSet = null;
+        ResultSet resultSet;
         sqlConnect.startDB();
         resultSet = sqlConnect.executeQuery("select " +
                 "carport_id, carport_owner, carport_state, carport_date, carport_price " +

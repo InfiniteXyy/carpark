@@ -11,7 +11,7 @@
 
 <body onload="check_cookie()">
 <div class="container" >
-  <form class="form-signin" action="Ground" method="post" id="myForm">
+  <form class="form-signin" action="/Ground" method="post" id="myForm">
     <h2 class="form-signin-heading">请登录</h2>
     <input type="email" name="inputEmail" class="form-control" placeholder="Email address">
     <input type="password" name="inputPassword" class="form-control" placeholder="Password">
@@ -32,7 +32,7 @@
         var xmlHttp = new XMLHttpRequest();
         var email = document.getElementsByName("inputEmail")[0].value;
         var password = document.getElementsByName("inputPassword")[0].value;
-        xmlHttp.open("post","/LoginServlet", true);
+        xmlHttp.open("post","/Servlets.LoginServlet", true);
         xmlHttp.setRequestHeader("Content-type","application/x-www-form-urlencoded")
         xmlHttp.onreadystatechange = function () {
             if (xmlHttp.readyState == 4) {

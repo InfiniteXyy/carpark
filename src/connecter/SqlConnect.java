@@ -1,6 +1,6 @@
-package MyConnector;
+package connecter;
 
-import data.Info;
+import data.info.Info;
 import data.user.User;
 
 import javax.naming.Context;

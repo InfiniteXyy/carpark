@@ -11,7 +11,7 @@
 
 <body>
 <div class="container">
-    <form class="form-signin"  action="Register" method="post" id="myform">
+    <form class="form-signin"  action="/Servlets.Register" method="post" id="myform">
         <h2 class="form-signin-heading">请注册</h2>
         <input type="email" name="inputEmail" class="form-control" placeholder="Email address" onblur="validate()" autofocus>
         <input type="password" id="password1" name="inputPassword" class="form-control" placeholder="Password">
@@ -40,7 +40,7 @@
     function validate() {
         var xmlHttp = new XMLHttpRequest();
         var email = document.getElementsByName("inputEmail")[0].value;
-        xmlHttp.open("post","/RegisterServlet", true);
+        xmlHttp.open("post","/Servlets.RegisterServlet", true);
         xmlHttp.setRequestHeader("Content-type","application/x-www-form-urlencoded")
         xmlHttp.onreadystatechange = function () {
             if (xmlHttp.readyState == 4) {

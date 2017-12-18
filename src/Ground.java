@@ -1,4 +1,5 @@
-import MyConnector.SqlConnect;
+
+import connecter.SqlConnect;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;

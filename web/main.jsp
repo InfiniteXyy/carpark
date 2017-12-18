@@ -1,5 +1,5 @@
 
-<%@ page import="data.Info" %>
+<%@ page import="data.info.Info" %>
 <%@ page import="data.GroundUpdater" %>
 <%@ page import="data.park.Carport" %>
 <%@ page import="java.util.ArrayList" %>
@@ -303,7 +303,7 @@
         var email = '<%= request.getParameter("inputEmail")%>';
         if (nickName.trim().length != 0) {
             var xmlHttp = new XMLHttpRequest();
-            xmlHttp.open("post","/ChangeNickName", true);
+            xmlHttp.open("post","/Servlets.ChangeNickName", true);
             xmlHttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
             xmlHttp.onreadystatechange = function () {
                 if (xmlHttp.readyState == 4) {
