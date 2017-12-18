@@ -1,7 +1,9 @@
-<%@ page import="MyConnector.SqlConnect" %>
+
 <%@ page import="data.Info" %>
-<%@ page import="java.sql.ResultSet" %>
-<%@ page import="java.sql.SQLException" %><%--
+<%@ page import="data.GroundUpdater" %>
+<%@ page import="data.park.Carport" %>
+<%@ page import="java.util.ArrayList" %>
+<%@ page import="data.park.Car" %><%--
   Created by IntelliJ IDEA.
   User: xyy
   Date: 2017/12/5
@@ -23,10 +25,8 @@
 </head>
 <body>
 <%
-    SqlConnect sqlConnect = new SqlConnect();
-    sqlConnect.startDB();
-    Info info = sqlConnect.getInfo();
-    sqlConnect.endStmt();
+    GroundUpdater updater = new GroundUpdater();
+    Info info = updater.updateInfo();
 %>
 <!-- 导航栏 -->
 <nav class="navbar navbar-fixed-top navbar-dark bg-primary">
@@ -134,40 +134,32 @@
             <div class="tab-content">
                 <br>
                 <div role="tabpanel" class="tab-pane fade in active" id="home1">
-                    <h1>主页</h1><br>
+                    <h1>车位租借</h1><br>
                     <div class="col-md-12 col-sm-12">
                         <div class="table-responsive">
                             <table class="table table-striped">
                                 <thead class="thead-inverse">
                                 <tr>
                                     <th>#</th>
-                                    <th>车主</th>
+                                    <th>卖家</th>
                                     <th>小区</th>
-                                    <th>时间</th>
+                                    <th>租借</th>
                                     <th>价格</th>
                                 </tr>
                                 </thead>
                                 <tbody>
                                 <%
-                                ResultSet rs = sqlConnect.executeQuery("select " +
-                                        "carport_id, carport_owner, carport_state, carport_date, carport_price " +
-                                        "from Carports");
-                                try {
-                                    while (rs.next()) {
+                                ArrayList<Carport> carports = updater.updateCarports();
+                                for (Carport rs : carports) {
                                 %>
                                 <tr>
-                                    <td><%= rs.getInt(1)%></td>
-                                    <td><%= rs.getString(2)%></td>
-                                    <td><%= rs.getString(3)%></td>
-                                    <td><%= rs.getDate(4).toString()%></td>
-                                    <td><%= rs.getInt(5)%></td>
+                                    <td><%= rs.getId()%></td>
+                                    <td><%= rs.getOwner()%></td>
+                                    <td><%= rs.getState()%></td>
+                                    <td><%= rs.getDate()%></td>
+                                    <td><%= rs.getPrice()%></td>
                                 </tr>
-                                <%
-                                    }
-                                } catch (SQLException e) {
-                                    e.printStackTrace();
-                                }
-                                %>
+                                <%}%>
                                 </tbody>
                             </table>
                         </div>
@@ -231,32 +223,21 @@
                     <h1>租车请求</h1><br>
                     <div class="card-columns">
                         <%
-                            rs = sqlConnect.executeQuery("select " +
-                                    "car_name, car_picture, car_owner " +
-                                    "from Cars");
-                            try {
-                                while (rs.next()) {
+                            ArrayList<Car> cars = updater.updateCars();
+                            for (Car car : cars) {
                         %>
                         <div class="carditems">
                             <div class="card text-left">
-                                <img class="card-img-top" src="/imgs/<%=rs.getString(2)%>" width="100%">
+                                <img class="card-img-top" src="/imgs/<%=car.getPicture()%>" width="100%">
                                 <div class="card-block">
-                                    <h4 class="card-title"><%=rs.getString(1)%></h4>
-                                    <p class="card-text">From <%=rs.getString(3)%></p>
+                                    <h4 class="card-title"><%=car.getName()%></h4>
+                                    <p class="card-text">From <%=car.getOwner()%></p>
                                         <button class="btn btn-primary">确认</button>
                                         <button class="btn btn-secondary">添加到愿望单</button>
                                 </div>
                             </div>
                         </div>
-                        <%
-                                }
-                            } catch (SQLException e) {
-                                e.printStackTrace();
-                            }
-                            sqlConnect.endStmt();
-                            sqlConnect.endDB();
-
-                        %>
+                        <%}%>
                         <div class="carditems">
                             <div class="card card-inverse" style="background-color: #333; border-color: #333;">
                                 <div class="card-block">

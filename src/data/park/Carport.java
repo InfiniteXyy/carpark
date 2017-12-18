@@ -4,41 +4,26 @@ import java.io.Serializable;
 import java.util.Date;
 
 public class Carport implements Serializable{
-    private int num;
-
+    private int id;
+    private String owner;
+    private String state;
+    private Date date;
     private int price;
 
-    private String Email;
-
-    private String state;
-
-    private Date time;
-
-    public Carport() {
+    public int getId() {
+        return id;
     }
 
-    public int getNum() {
-        return num;
+    public void setId(int id) {
+        this.id = id;
     }
 
-    public void setNum(int num) {
-        this.num = num;
+    public String getOwner() {
+        return owner;
     }
 
-    public int getPrice() {
-        return price;
-    }
-
-    public void setPrice(int price) {
-        this.price = price;
-    }
-
-    public String getEmail() {
-        return Email;
-    }
-
-    public void setEmail(String email) {
-        Email = email;
+    public void setOwner(String owner) {
+        this.owner = owner;
     }
 
     public String getState() {
@@ -49,11 +34,32 @@ public class Carport implements Serializable{
         this.state = state;
     }
 
-    public Date getTime() {
-        return time;
+    public Date getDate() {
+        return date;
     }
 
-    public void setTime(Date time) {
-        this.time = time;
+    public void setDate(Date date) {
+        this.date = date;
+    }
+
+    public int getPrice() {
+        return price;
+    }
+
+    public void setPrice(int price) {
+        this.price = price;
+    }
+
+    public Carport() {
+
+    }
+
+    public Carport(int id, String owner, String state, Date date, int price) {
+
+        this.id = id;
+        this.owner = owner;
+        this.state = state;
+        this.date = date;
+        this.price = price;
     }
 }
