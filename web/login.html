@@ -9,16 +9,16 @@
 
 </head>
 
-<body>
+<body onload="check_cookie()">
 <div class="container" >
   <form class="form-signin" action="Ground" method="post" id="myForm">
     <h2 class="form-signin-heading">请登录</h2>
-    <input type="email" name="inputEmail" class="form-control" placeholder="Email address" autofocus>
+    <input type="email" name="inputEmail" class="form-control" placeholder="Email address">
     <input type="password" name="inputPassword" class="form-control" placeholder="Password">
       <span id="Info"> </span>
     <div class="checkbox">
       <label>
-        <input type="checkbox" value="remember-me"> 记住我
+        <input type="checkbox" id="remember_me"> 记住我
       </label>
     </div>
     <input type="button" class="btn btn-lg btn-primary btn-block" onclick="validate()" value="登录"></input>
@@ -39,6 +39,9 @@
                 if (xmlHttp.status == 200) {
                     var result = xmlHttp.responseText;//接受返回的字符串
                     if (result == "success") {
+                        if (document.getElementById("remember_me").checked) {
+                            set_cookie(email);
+                        }
                         document.getElementById("myForm").submit();
                     } else {
                         document.getElementById("Info").innerHTML="<span style='color: #ff461b'>"+result;
@@ -50,6 +53,43 @@
         };
         xmlHttp.send("inputEmail="+email+"&inputPassword="+password);
     }
+
+    function set_cookie(name) {
+        var exdate=new Date();
+        var expiredays = 7;
+        exdate.setDate(exdate.getDate()+expiredays);
+        document.cookie="username=" + name +
+            ((expiredays==null) ? "" : ";expires="+exdate.toUTCString())
+    }
+
+    function check_cookie() {
+        username=getCookie('username');
+        if (username!=null && username!="") {
+            document.getElementsByName("inputEmail")[0].value = username;
+            document.getElementsByName("inputPassword")[0].focus();
+        } else {
+            document.getElementsByName("inputEmail")[0].focus();
+        }
+    }
+
+    function getCookie(c_name)
+    {
+        if (document.cookie.length>0)
+        {
+            c_start=document.cookie.indexOf(c_name + "=");
+            if (c_start != -1)
+            {
+                c_start=c_start + c_name.length+1;
+                c_end=document.cookie.indexOf(";",c_start);
+                if (c_end == -1)
+                    c_end = document.cookie.length;
+                return document.cookie.substring(c_start,c_end)
+            }
+        }
+        return ""
+    }
+
+
 </script>
 
 </html>

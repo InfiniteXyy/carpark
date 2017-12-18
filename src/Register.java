@@ -1,8 +1,6 @@
 import MyConnector.SqlConnect;
-import com.sun.tools.internal.xjc.reader.xmlschema.bindinfo.BIConversion;
 import data.user.User;
 
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -10,11 +8,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-@WebServlet(name = "RegisterServlet", urlPatterns = {"/RegisterServlet"})
-public class RegisterServlet extends HttpServlet {
+@WebServlet(name = "Register", urlPatterns = {"/Register"})
+public class Register extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String email = request.getParameter("inputEmail");
-        String password = "";
+        String password = request.getParameter("inputPassword");
         User user = new User();
         user.setEmail(email);
         user.setPassword(password);
@@ -22,17 +20,12 @@ public class RegisterServlet extends HttpServlet {
         SqlConnect sqlConnect = new SqlConnect();
         sqlConnect.startDB();
 
-        //这里应该检查是否有重复的用户存在
-        int status = sqlConnect.checkInfoFromDB(user);
-
-        if (status == User.NOUSER) {
-            response.getWriter().print("ok");
-        } else if (status == User.WRONGPW) {
-            response.getWriter().print("duplicate");
-        }
+        sqlConnect.putInfoIntoDB(user);
 
         sqlConnect.endStmt();
         sqlConnect.endDB();
+
+        response.sendRedirect("/login.html");
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
