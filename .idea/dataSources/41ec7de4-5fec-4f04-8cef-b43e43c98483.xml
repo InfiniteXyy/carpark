@@ -964,7 +964,7 @@
     </column>
     <column id="242" parent="232" name="car_owner">
       <Position>3</Position>
-      <DataType>char(20)|0</DataType>
+      <DataType>char(30)|0</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
     <column id="243" parent="232" name="car_name">
@@ -978,9 +978,9 @@
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="245" parent="233" name="user_id">
+    <column id="245" parent="233" name="user_email">
       <Position>2</Position>
-      <DataType>int(11)|0</DataType>
+      <DataType>char(30)|0</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
     <column id="246" parent="233" name="news_content">
@@ -988,22 +988,17 @@
       <DataType>char(100)|0</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <key id="247" parent="233" name="PRIMARY">
-      <NameSurrogate>1</NameSurrogate>
-      <ColNames>news_id</ColNames>
-      <Primary>1</Primary>
-    </key>
-    <column id="248" parent="234" name="user_email">
+    <column id="247" parent="234" name="user_email">
       <Position>1</Position>
       <DataType>char(30)|0</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="249" parent="234" name="user_password">
+    <column id="248" parent="234" name="user_password">
       <Position>2</Position>
       <DataType>char(20)|0</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="250" parent="234" name="user_nickname">
+    <column id="249" parent="234" name="user_nickname">
       <Position>3</Position>
       <DataType>char(20)|0</DataType>
       <ColumnKind>normal</ColumnKind>

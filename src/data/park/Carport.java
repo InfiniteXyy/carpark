@@ -1,9 +1,9 @@
-package data.lots;
+package data.park;
 
 import java.io.Serializable;
 import java.util.Date;
 
-public class Carpark implements Serializable{
+public class Carport implements Serializable{
     private int num;
 
     private int price;
@@ -14,7 +14,7 @@ public class Carpark implements Serializable{
 
     private Date time;
 
-    public Carpark() {
+    public Carport() {
     }
 
     public int getNum() {

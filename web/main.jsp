@@ -33,7 +33,7 @@
     <button class="navbar-toggler hidden-sm-up pull-right" type="button" data-toggle="collapse" data-target="#collapsingNavbar">
         ☰
     </button>
-    <a class="navbar-brand" href="#"><%=request.getParameter("inputEmail")%></a>
+    <a class="navbar-brand" href="#" id="nickName"><%=request.getAttribute("name")%></a>
     <div class="collapse navbar-toggleable-xs" id="collapsingNavbar">
         <ul class="nav navbar-nav pull-right">
             <li class="nav-item">
@@ -60,7 +60,7 @@
         <!-- 侧边栏 -->
         <div class="col-md-3 col-lg-2 sidebar-offcanvas" id="sidebar" role="navigation">
             <ul class="nav nav-pills nav-stacked">
-                <li class="nav-item"><a class="nav-link" href="#">用户设置</a></li>
+                <li class="nav-item"><a class="nav-link" data-toggle="modal" data-target="#user_info_model" style="cursor: pointer">昵称设置</a></li>
                 <li class="nav-item"><a class="nav-link" href="#">关于网站</a></li>
                 <li class="nav-item"><a class="nav-link" href="#">关于合作</a></li>
                 <li class="nav-item"><a class="nav-link" href="#">联系我</a></li>
@@ -79,7 +79,7 @@
                     <span aria-hidden="true">×</span>
                     <span class="sr-only">Close</span>
                 </button>
-                <strong>Holy guacamole!</strong> It's free.. this is an example theme.
+                <strong>警告</strong> 与服务器断开连接，请检查你的网络状况！
             </div>
 
 
@@ -149,7 +149,9 @@
                                 </thead>
                                 <tbody>
                                 <%
-                                ResultSet rs = sqlConnect.executeQuery("select * from Carports");
+                                ResultSet rs = sqlConnect.executeQuery("select " +
+                                        "carport_id, carport_owner, carport_state, carport_date, carport_price " +
+                                        "from Carports");
                                 try {
                                     while (rs.next()) {
                                 %>
@@ -178,13 +180,13 @@
                         <div class="card card-default card-block">
                             <ul id="tabsJustified" class="nav nav-tabs nav-justified">
                                 <li class="nav-item">
-                                    <a class="nav-link" href="" data-target="#tab1" data-toggle="tab">List</a>
+                                    <a class="nav-link" href="" data-target="#tab1" data-toggle="tab">我的车辆</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link active" href="" data-target="#tab2" data-toggle="tab">Profile</a>
+                                    <a class="nav-link active" href="" data-target="#tab2" data-toggle="tab">我的租借</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" href="" data-target="#tab3" data-toggle="tab">More</a>
+                                    <a class="nav-link" href="" data-target="#tab3" data-toggle="tab">我的车位</a>
                                 </li>
                             </ul>
                             <!--/tabs-->
@@ -229,7 +231,9 @@
                     <h1>租车请求</h1><br>
                     <div class="card-columns">
                         <%
-                            rs = sqlConnect.executeQuery("select * from Cars");
+                            rs = sqlConnect.executeQuery("select " +
+                                    "car_name, car_picture, car_owner " +
+                                    "from Cars");
                             try {
                                 while (rs.next()) {
                         %>
@@ -291,8 +295,63 @@
     </div>
 </div>
 
+<!-- 确认信息的模态框 -->
+<div class="modal fade" id="user_info_model">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="myModalLabel">修改昵称</h4>
+            </div>
+            <div class="modal-body">
+                <input type="text" class="form-control" id="nickNameTxt">
+            </div>
+            <div class="modal-footer">
+                <span id="nameExistWarn" style="display: none;"></span>
+                <button type="button" class="btn btn-primary" id="nickNameBtn">确定</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 </body>
 <script>
     $("#myInfo").collapse();
+
+    document.getElementById('nickNameBtn').addEventListener('click', function() {
+        var nickName = document.getElementById("nickNameTxt").value;
+        var email = '<%= request.getParameter("inputEmail")%>';
+        if (nickName.trim().length != 0) {
+            var xmlHttp = new XMLHttpRequest();
+            xmlHttp.open("post","/ChangeNickName", true);
+            xmlHttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+            xmlHttp.onreadystatechange = function () {
+                if (xmlHttp.readyState == 4) {
+                    if (xmlHttp.status == 200) {
+                        var result = xmlHttp.responseText;//接受返回的字符串
+                        if (result == "ok") {
+                            document.getElementById("nickName").innerText=nickName;
+                            $('#user_info_model').modal('hide');
+                        } else {
+                            nameExistWarn();
+                        }
+                    } else {
+                        alert("服务器繁忙，请稍候重试！");
+                    }
+                }
+            };
+            xmlHttp.send("nickName="+nickName+"&email="+email);
+
+        } else {
+            document.getElementById('nickNameTxt').focus();
+            document.getElementById('nameExistWarn').innerHTML = '<b style="color:#cd5e3c"> 请输入昵称！</b>';
+            $("#nameExistWarn").fadeIn(100);
+        }
+    }, false);
+
+    function nameExistWarn() {
+        document.getElementById('nameExistWarn').innerHTML = '<b style="color:#cd5e3c"> 昵称已存在！</b>';
+        $("#nameExistWarn").fadeIn(100);
+    }
+
 </script>
 </html>

@@ -62,18 +62,15 @@ public class SqlConnect {
 
         try {
             statement = conn.createStatement();
-            ResultSet resultSet = statement.executeQuery("SELECT user_email FROM Users");
-            while (resultSet.next()) {
-                info.userNum++;
-            }
-            resultSet = statement.executeQuery("SELECT carport_id FROM Carports");
-            while (resultSet.next()) {
-                info.lotNum++;
-            }
-            resultSet = statement.executeQuery("SELECT car_id FROM Cars");
-            while (resultSet.next()) {
-                info.carNum++;
-            }
+            ResultSet resultSet = statement.executeQuery("SELECT COUNT(*) FROM Users");
+            resultSet.next();
+            info.userNum = resultSet.getInt(1);
+            resultSet = statement.executeQuery("SELECT COUNT(*) FROM Carports");
+            resultSet.next();
+            info.lotNum = resultSet.getInt(1);
+            resultSet = statement.executeQuery("SELECT COUNT(*) FROM Cars");
+            resultSet.next();
+            info.carNum = resultSet.getInt(1);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -89,6 +86,15 @@ public class SqlConnect {
             e.printStackTrace();
         }
         return rs;
+    }
+
+    public void updateQuery(String sql) {
+        try {
+            statement = conn.createStatement();
+            statement.execute(sql);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     public void endDB() {
