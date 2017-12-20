@@ -979,6 +979,7 @@
       <Position>1</Position>
       <DataType>int(11)|0</DataType>
       <NotNull>1</NotNull>
+      <SequenceIdentity>1</SequenceIdentity>
       <ColumnKind>normal</ColumnKind>
     </column>
     <column id="246" parent="233" name="news_content">
@@ -996,42 +997,47 @@
       <DataType>datetime|0</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="249" parent="234" name="order_id">
+    <key id="249" parent="233" name="PRIMARY">
+      <NameSurrogate>1</NameSurrogate>
+      <ColNames>news_id</ColNames>
+      <Primary>1</Primary>
+    </key>
+    <column id="250" parent="234" name="order_id">
       <Position>1</Position>
       <DataType>int(11)|0</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="250" parent="234" name="order_from">
+    <column id="251" parent="234" name="order_from">
       <Position>2</Position>
       <DataType>char(30)|0</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="251" parent="234" name="order_to">
+    <column id="252" parent="234" name="order_to">
       <Position>3</Position>
       <DataType>char(30)|0</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="252" parent="234" name="order_car">
+    <column id="253" parent="234" name="order_car">
       <Position>4</Position>
       <DataType>int(11)|0</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="253" parent="234" name="order_ddl">
+    <column id="254" parent="234" name="order_ddl">
       <Position>5</Position>
       <DataType>date|0</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="254" parent="235" name="user_email">
+    <column id="255" parent="235" name="user_email">
       <Position>1</Position>
       <DataType>char(30)|0</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="255" parent="235" name="user_password">
+    <column id="256" parent="235" name="user_password">
       <Position>2</Position>
       <DataType>char(20)|0</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="256" parent="235" name="user_nickname">
+    <column id="257" parent="235" name="user_nickname">
       <Position>3</Position>
       <DataType>char(20)|0</DataType>
       <ColumnKind>normal</ColumnKind>

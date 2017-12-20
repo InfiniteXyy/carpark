@@ -13,9 +13,14 @@ import java.util.ArrayList;
 public class GroundUpdater {
     private SqlConnect sqlConnect;
     private String email;
+
     public GroundUpdater(String email) {
         sqlConnect = new SqlConnect();
         this.email = email;
+    }
+    public GroundUpdater() {
+        sqlConnect = new SqlConnect();
+        email = "";
     }
 
     public ArrayList<Carport> updateCarports() {
@@ -89,7 +94,7 @@ public class GroundUpdater {
     public ArrayList<News> updateNews() {
         ResultSet resultSet = null;
         sqlConnect.startDB();
-        resultSet = sqlConnect.executeQuery("SELECT news_content, ifnull(user_nickname, user_email), news_time FROM News JOIN Users WHERE news_owner = user_email ORDER BY news_time");
+        resultSet = sqlConnect.executeQuery("SELECT news_content, ifnull(user_nickname, user_email), news_time FROM News JOIN Users WHERE news_owner = user_email ORDER BY news_time DESC LIMIT 10 ");
         ArrayList<News> newsArrayList = new ArrayList<>();
         try {
             while (resultSet.next()) {

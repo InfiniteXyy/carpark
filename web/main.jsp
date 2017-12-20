@@ -137,25 +137,7 @@
             <div class="tab-content">
                 <div role="tabpanel" class="tab-pane fade in active" id="home1">
                     <h1>最近消息</h1><br>
-                    <div class="carditems">
-
-                    <%
-                        ArrayList<News> news = updater.updateNews();
-                        for (News news1 : news) {
-                    %>
-                    <div class="card card-block text-right">
-                        <blockquote class="card-blockquote">
-                            <p><%=news1.getContent()%></p>
-                            <footer>
-                                <small class="text-muted">
-                                    <%=news1.getOwner()%><br>
-                                    <%=news1.getDate().toString() + "   " + news1.getTime().toString()%>
-                                </small>
-                            </footer>
-                        </blockquote>
-                    </div>
-                    <%}%>
-                    </div>
+                    <iframe src="news_holder.jsp" id="news_holder" frameborder="no" scrolling="no"></iframe>
                     <h1>车位租借</h1><br>
                     <div class="col-md-12 col-sm-12">
                         <div class="table-responsive">
@@ -304,6 +286,18 @@
         </div>
     </div>
 </div>
+<br><br><br><br>
+<!-- 底部发送信息 -->
+<nav class="navbar bg-dark navbar-dark" style="position: fixed; bottom: 0; width: 100%">
+    <!-- 2 8 2 布局 -->
+    <div class="col-2"></div>
+
+    <div class="col-8">
+        <input type="text" class="form-control" id="inputTxt" placeholder="按回车发送">
+    </div>
+
+    <div class="col-2"></div>
+</nav>
 
 <!-- 确认信息的模态框 -->
 <div class="modal fade" id="user_info_model">
@@ -347,12 +341,12 @@
 </body>
 <script>
     $("#myInfo").collapse();
-
+    var xmlHttp = new XMLHttpRequest();
+    var email = '<%= request.getParameter("inputEmail")%>';
+    //设置昵称
     document.getElementById('nickNameBtn').addEventListener('click', function() {
         var nickName = document.getElementById("nickNameTxt").value;
-        var email = '<%= request.getParameter("inputEmail")%>';
         if (nickName.trim().length != 0) {
-            var xmlHttp = new XMLHttpRequest();
             xmlHttp.open("post","/Servlets.ChangeNickName", true);
             xmlHttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
             xmlHttp.onreadystatechange = function () {
@@ -379,10 +373,53 @@
         }
     }, false);
 
+    //设置发送信息
+    document.getElementById('inputTxt').addEventListener('keyup', function(e) {
+        if (e.keyCode != 13) {return;}
+        var input = document.getElementById("inputTxt").value;
+        if (input.trim().length != 0) {
+            xmlHttp.open("post","/Servlets.AddContent.AddNews", true);
+            xmlHttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+            xmlHttp.send("news="+input +"&email="+ email);
+            $("#news_holder").attr('src', $('#news_holder').attr('src'));
+            document.getElementById("inputTxt").value = "";
+            autoFitIframe(document.getElementById("news_holder"));
+        }
+    }, false);
+
+    //若昵称已存在的警告信息
     function nameExistWarn() {
         document.getElementById('nameExistWarn').innerHTML = '<b style="color:#cd5e3c"> 昵称已存在！</b>';
         $("#nameExistWarn").fadeIn(100);
     }
+
+    //自动调节子网页的高度
+    autoFitIframe(document.getElementById("news_holder"));
+    function autoFitIframe(iframe) {
+        var doc = iframe.contentDocument || iframe.contentWindow.document;
+        iframe.style.width = '100%';
+
+        function update() {
+            var containerWidth = iframe.parentNode.offsetWidth;
+            doc.body.style.width =  + 'px';
+            doc.body.style.padding = '0';
+            doc.body.style.margin = '0';
+            doc.body.style.border = 'none';
+            iframe.style.height = '0';
+            iframe.style.height = iframe.contentWindow.document.body.scrollHeight + 'px';
+        }
+        if (doc.readyState === 'complete') {
+            update();
+        }
+
+        if (iframe.addEventListener) {
+            iframe.addEventListener('load', update, false);
+        }
+        else if (iframe.attachEvent) {
+            iframe.attachEvent('onload', update);
+        }
+    }
+
 
 </script>
 </html>
