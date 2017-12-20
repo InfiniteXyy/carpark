@@ -3,7 +3,8 @@
 <%@ page import="data.GroundUpdater" %>
 <%@ page import="data.park.Carport" %>
 <%@ page import="java.util.ArrayList" %>
-<%@ page import="data.park.Car" %><%--
+<%@ page import="data.park.Car" %>
+<%@ page import="data.user.News" %><%--
   Created by IntelliJ IDEA.
   User: xyy
   Date: 2017/12/5
@@ -25,7 +26,8 @@
 </head>
 <body>
 <%
-    GroundUpdater updater = new GroundUpdater();
+    String email = request.getParameter("inputEmail");
+    GroundUpdater updater = new GroundUpdater(email);
     Info info = updater.updateInfo();
 %>
 <!-- 导航栏 -->
@@ -49,6 +51,9 @@
                 <a class="nav-link" href="#messages1" role="tab" data-toggle="tab">租车请求</a>
             </li>
             <li class="nav-item">
+                <a class="nav-link" href="#rank" role="tab" data-toggle="tab">排行榜</a>
+            </li>
+            <li class="nav-item">
                 <a class="nav-link" href="#settings1" role="tab" data-toggle="tab">Settings</a>
             </li>
         </ul>
@@ -61,9 +66,7 @@
         <div class="col-md-3 col-lg-2 sidebar-offcanvas" id="sidebar" role="navigation">
             <ul class="nav nav-pills nav-stacked">
                 <li class="nav-item"><a class="nav-link" data-toggle="modal" data-target="#user_info_model" style="cursor: pointer">昵称设置</a></li>
-                <li class="nav-item"><a class="nav-link" href="#">关于网站</a></li>
-                <li class="nav-item"><a class="nav-link" href="#">关于合作</a></li>
-                <li class="nav-item"><a class="nav-link" href="#">联系我</a></li>
+                <li class="nav-item"><a class="nav-link" data-toggle="modal" data-target="#connect_model" style="cursor: pointer">联系我</a></li>
             </ul>
         </div>
         <div class="col-md-9 col-lg-10 main">
@@ -121,10 +124,10 @@
                     <div class="card card-inverse card-warning">
                         <div class="card-block bg-warning">
                             <div class="rotate">
-                                <i class="fa fa-commenting fa-5x"></i>
+                                <i class="fa fa-keyboard-o fa-5x"></i>
                             </div>
                             <h6 class="text-uppercase">News</h6>
-                            <h1 class="display-1">36</h1>
+                            <h1 class="display-1"><%=info.newsNum%></h1>
                         </div>
                     </div>
                 </div>
@@ -132,8 +135,26 @@
 
             <!-- 标签内容 -->
             <div class="tab-content">
-                <br>
                 <div role="tabpanel" class="tab-pane fade in active" id="home1">
+                    <h1>最近消息</h1><br>
+                    <div class="carditems">
+                    <%
+                        ArrayList<News> news = updater.updateNews();
+                        for (News news1 : news) {
+                    %>
+                    <div class="card card-block text-right">
+                        <blockquote class="card-blockquote">
+                            <p><%=news1.getContent()%></p>
+                            <footer>
+                                <small class="text-muted">
+                                    <%=news1.getOwner()%><br>
+                                    <%=news1.getDate().toString() + "   " + news1.getTime().toString()%>
+                                </small>
+                            </footer>
+                        </blockquote>
+                    </div>
+                    <%}%>
+                    </div>
                     <h1>车位租借</h1><br>
                     <div class="col-md-12 col-sm-12">
                         <div class="table-responsive">
@@ -164,18 +185,18 @@
                             </table>
                         </div>
                     </div>
-                    </p>
                 </div>
+
                 <div role="tabpanel" class="tab-pane fade" id="profile1">
                     <h1>个人信息</h1><br>
                     <div class="col-lg-12">
                         <div class="card card-default card-block">
                             <ul id="tabsJustified" class="nav nav-tabs nav-justified">
                                 <li class="nav-item">
-                                    <a class="nav-link" href="" data-target="#tab1" data-toggle="tab">我的车辆</a>
+                                    <a class="nav-link active" href="" data-target="#tab1" data-toggle="tab">我的车辆</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link active" href="" data-target="#tab2" data-toggle="tab">我的租借</a>
+                                    <a class="nav-link" href="" data-target="#tab2" data-toggle="tab">我的租借</a>
                                 </li>
                                 <li class="nav-item">
                                     <a class="nav-link" href="" data-target="#tab3" data-toggle="tab">我的车位</a>
@@ -184,15 +205,27 @@
                             <!--/tabs-->
                             <br>
                             <div id="tabsJustifiedContent" class="tab-content">
-                                <div class="tab-pane fade" id="tab1">
+                                <div class="tab-pane fade active in" id="tab1">
                                     <div class="list-group">
-                                        <a href="" class="list-group-item"><span class="pull-right label label-success">51</span> Home Link</a>
-                                        <a href="" class="list-group-item"><span class="pull-right label label-success">8</span> Link 2</a>
-                                        <a href="" class="list-group-item"><span class="pull-right label label-success">23</span> Link 3</a>
-                                        <a href="" class="list-group-item text-muted">Link n..</a>
+                                        <div class="card-columns">
+                                            <%
+                                                ArrayList<Car> mycars = updater.updateCars();
+                                                for (Car car : mycars) {
+                                            %>
+                                            <div class="carditems">
+                                                <div class="card text-left">
+                                                    <img class="card-img-top" src="/imgs/<%=car.getPicture()%>" width="100%">
+                                                    <div class="card-block">
+                                                        <h4 class="card-title"><%=car.getName()%></h4>
+                                                        <button class="btn btn-primary">查看详情</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <%}%>
+                                        </div>
                                     </div>
                                 </div>
-                                <div class="tab-pane fade active in" id="tab2">
+                                <div class="tab-pane fade" id="tab2">
                                     <div class="row">
                                         <div class="col-sm-7">
                                             <h4>Profile Section</h4>
@@ -221,9 +254,16 @@
 
                 <div role="tabpanel" class="tab-pane fade" id="messages1">
                     <h1>租车请求</h1><br>
+
+
+                </div>
+
+                <div role="tabpanel" class="tab-pane" id="rank">
+                    <h1>排行榜</h1><br><br>
+
                     <div class="card-columns">
                         <%
-                            ArrayList<Car> cars = updater.updateCars();
+                            ArrayList<Car> cars = updater.updateRankCars();
                             for (Car car : cars) {
                         %>
                         <div class="carditems">
@@ -232,26 +272,14 @@
                                 <div class="card-block">
                                     <h4 class="card-title"><%=car.getName()%></h4>
                                     <p class="card-text">From <%=car.getOwner()%></p>
-                                        <button class="btn btn-primary">确认</button>
+                                        <button class="btn btn-primary">联系主人</button>
                                         <button class="btn btn-secondary">添加到愿望单</button>
                                 </div>
                             </div>
                         </div>
                         <%}%>
-                        <div class="carditems">
-                            <div class="card card-inverse" style="background-color: #333; border-color: #333;">
-                                <div class="card-block">
-                                    <h3 class="card-title">帮助我们</h3>
-                                    <p class="card-text">不管你有任何建议或者发现了什么bug，都请联系我们，你的支持是我们最大的动力</p>
-                                    <a href='mailto:xuyiyangwing@qq.com' class="btn btn-primary">联系邮箱</a>
-                                </div>
-                            </div>
-                        </div>
-
                     </div>
-
                 </div>
-
 
                 <div role="tabpanel" class="tab-pane" id="settings1">
                     <h1>设置</h1><br><br>
@@ -293,6 +321,27 @@
         </div>
     </div>
 </div>
+
+<!-- 联系我们的模态框 -->
+<div class="modal fade" id="connect_model">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="carditems">
+                    <div class="card">
+                        <div class="card-block">
+                            <h3 class="card-title">帮助我</h3>
+                            <p class="card-text">不管你有任何建议或者发现了什么bug，都请联系我们，你的支持是我最大的动力</p>
+                            <a href='mailto:xuyiyangwing@qq.com' class="btn btn-primary">联系邮箱</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
 
 </body>
 <script>

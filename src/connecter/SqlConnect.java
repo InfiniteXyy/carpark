@@ -71,6 +71,9 @@ public class SqlConnect {
             resultSet = statement.executeQuery("SELECT COUNT(*) FROM Cars");
             resultSet.next();
             info.carNum = resultSet.getInt(1);
+            resultSet = statement.executeQuery("SELECT COUNT(*) FROM News");
+            resultSet.next();
+            info.newsNum = resultSet.getInt(1);
         } catch (SQLException e) {
             e.printStackTrace();
         }
