@@ -138,6 +138,7 @@
                 <div role="tabpanel" class="tab-pane fade in active" id="home1">
                     <h1>最近消息</h1><br>
                     <div class="carditems">
+
                     <%
                         ArrayList<News> news = updater.updateNews();
                         for (News news1 : news) {
