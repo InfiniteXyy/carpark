@@ -4,7 +4,7 @@
 <%@ page import="data.park.Carport" %>
 <%@ page import="java.util.ArrayList" %>
 <%@ page import="data.park.Car" %>
-<%@ page import="data.user.News" %><%--
+<%@ page import="data.user.Order" %><%--
   Created by IntelliJ IDEA.
   User: xyy
   Date: 2017/12/5
@@ -59,6 +59,7 @@
         </ul>
     </div>
 </nav>
+
 <div class="container-fluid" id="main">
     <div class="row row-offcanvas row-offcanvas-left">
         <!-- 侧边栏 -->
@@ -209,18 +210,28 @@
                                         </div>
                                     </div>
                                 </div>
+
                                 <div class="tab-pane fade" id="tab2">
                                     <div class="row">
                                         <div class="col-sm-7">
-                                            <h4>Profile Section</h4>
-                                            <p>Imagine creating this simple user profile inside a tab card.</p>
+                                            <h4>Extreme car</h4><br><br>
+                                            <p><b>所属者：</b>xyy's son</p>
+                                            <p><b>状态：</b>未通过</p>
                                         </div>
-                                        <div class="col-sm-5"><img src="http://placehold.it/170" class="pull-right img-responsive img-rounded"></div>
+                                        <div class="col-sm-5"><img src="/imgs/car5.jpg" height="200" class="pull-right img-responsive img-rounded"></div>
                                     </div>
                                     <hr>
-                                    <a href="javascript:;" class="btn btn-info btn-block">Read More Profiles</a>
-                                    <div class="spacer5"></div>
+                                    <div class="row">
+                                        <div class="col-sm-7">
+                                            <h4>Extreme car</h4><br><br>
+                                            <p><b>所属者：</b>xyy's son</p>
+                                            <p><b>状态：</b>未通过</p>
+                                        </div>
+                                        <div class="col-sm-5"><img src="/imgs/car6.jpg" height="200" class="pull-right img-responsive img-rounded"></div>
+                                    </div>
+                                    <hr>
                                 </div>
+
                                 <div class="tab-pane fade" id="tab3">
                                     <div class="list-group">
                                         <a href="" class="list-group-item"><span class="pull-right label label-info label-pill">44</span> <code>.panel</code> is now <code>.card</code></a>
@@ -237,8 +248,40 @@
 
                 <!-- 租车请求 -->
                 <div role="tabpanel" class="tab-pane fade" id="messages1">
-                    <h1>租车请求</h1><br>
+                    <h1>租车请求</h1><br><br>
+                    <h2>我的请求</h2><br>
+                    <div class="col-md-12 col-sm-12">
+                        <div class="table-responsive">
+                            <table class="table table-striped">
+                                <thead class="thead-inverse">
+                                <tr>
+                                    <th>租借者</th>
+                                    <th>租借时限</th>
+                                    <th>价格</th>
+                                    <th>状态</th>
+                                    <th>图片</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <%
 
+                                    ArrayList<Order> myRequests = updater.updateMyOrder();
+                                    for (Order myRequest: myRequests) {
+                                %>
+                                <tr>
+                                    <td><%=myRequest.getOriginator()%></td>
+                                    <td><%=myRequest.getDdl()%></td>
+                                    <td><%=myRequest.getMoney()%></td>
+                                    <td><%=myRequest.renderAccepted()%></td>
+                                    <td><img class="carpic" src="/imgs/<%=myRequest.getCarPic()%>" height="50px" ></td>
+                                </tr>
+                                <%}%>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <hr>
+                    <h2>待处理的请求</h2>
 
                 </div>
 
@@ -261,7 +304,7 @@
                                     %>
                                     <p class="card-text"><b>Owner: </b> <%=car.getOwner()%></p>
                                         <button class="btn btn-primary" onclick="open_message_box('<%= car.getEmail()%>')">联系主人</button>
-                                        <button class="btn btn-secondary">发送租车请求</button>
+                                        <button class="btn btn-secondary" onclick="addOrder('<%= car.getId()%>', '<%=car.getEmail()%>')">发送租车请求</button>
                                     <%
                                         } else {
                                     %>
@@ -303,7 +346,7 @@
 <br><br><br><br>
 
 <!-- 发送信息模态框 -->
-<div class="modal fade" id="message_model" >
+<div class="modal fade" id="message_modal" >
     <div class="modal-dialog" role="document" aria-hidden="true">
         <div class="modal-content">
             <div class="modal-header">
@@ -316,7 +359,7 @@
             <div class="modal-body">
                 <form>
                     <div class="form-group">
-                        <label for="atNames" class="control-label">@Somebody split with ','</label>
+                        <label for="atNames" class="control-label">@Somebody <b>Split by ","</b></label>
                         <input type="text" class="form-control" id="atNames">
                     </div>
                     <div class="form-group">
@@ -335,7 +378,7 @@
 </div>
 
 <!-- 修改昵称的模态框 -->
-<div class="modal fade" id="user_info_model">
+<div class="modal fade" id="user_info_modal">
     <div class="modal-dialog" role="document" aria-hidden="true">
         <div class="modal-content">
             <div class="modal-header">
@@ -369,16 +412,47 @@
             </div>
         </div>
     </div>
-
 </div>
 
 <!-- 显示车辆信息的模态框 -->
-<div class="modal fade bd-example-modal-sm" tabindex="-1" role="dialog" id="carinfo_model">
+<div class="modal fade bd-example-modal-sm" tabindex="-1" role="dialog" id="carinfo_modal">
     <div class="modal-dialog modal-sm">
         <div class="modal-content" id="carInfo">
         </div>
     </div>
 </div>
+
+<!-- 发送租车请求的模态框 -->
+<div class="modal fade" id="orderRequest_modal">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                    <span class="sr-only">Close</span>
+                </button>
+                <h4 class="modal-title" >New order</h4>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="form-group">
+                        <label for="order_ddl" class="control-label">SET Deadline:</label>
+                        <input type="date" class="form-control" id="order_ddl">
+                    </div>
+                    <div class="form-group">
+                        <label for="order_money" class="control-label">Money:</label>
+                        <input type="text" class="form-control" id="order_money">
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" onclick="send_order()">Send order</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 </body>
 <script>
     $("#myInfo").collapse();
@@ -432,10 +506,11 @@
                             document.getElementById("wrongEmail").innerHTML = '<b style="color:#cd5e3c"> 无效用户名或错误格式！</b>';
                             $("#wrongEmail").fadeIn(100);
                         } else {
-                            $("#message_model").modal('hide');
                             document.getElementById("message-text").value = "";
+                            alert("发送成功");
                             $("#wrongEmail").fadeOut(100);
                             refreshNews();
+                            $("#message_modal").modal('hide');
                         }
                     } else {
                         alert("服务器繁忙，请稍候重试！");
@@ -490,7 +565,7 @@
         //目前租出状态，累计获得价格，车辆照片，车辆名称
         if (CarData[car] != null) {
             document.getElementById("carInfo").innerHTML=CarData[car];
-            $('#carinfo_model').modal();
+            $('#carinfo_modal').modal();
         } else {
             xmlHttp.open("post","/Servlets.Search.CarDetails", true);
             xmlHttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
@@ -499,7 +574,7 @@
                     if (xmlHttp.status == 200) {
                         var result = xmlHttp.responseText;//接受返回的字符串
                         document.getElementById("carInfo").innerHTML=result;
-                        $('#carinfo_model').modal();
+                        $('#carinfo_modal').modal();
                         CarData[car] = result;
                     } else {
                         alert("服务器繁忙，请稍候重试！");
@@ -513,7 +588,32 @@
     //打开发送信息的页面
     function open_message_box(owner) {
         document.getElementById("atNames").value = owner;
-        $('#message_model').modal();
+        $('#message_modal').modal();
+    }
+
+    var orderCar, orderTo;
+    //设置发送租车请求
+    function send_order() {
+        var ddl = document.getElementById("order_ddl").value;
+        var money = document.getElementById("order_money").value;
+        if (isNaN(money)) {
+            document.getElementById("order_money").value = "";
+            money = document.getElementById("order_money").blur();
+            alert("金额输入错误！请输入纯数字！");
+        } else {
+            xmlHttp.open("post","/Servlets.AddContent.AddOrder", true);
+            xmlHttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+            xmlHttp.send("from="+email+"&to="+orderTo+"&ddl="+ddl+"&car="+orderCar+"&money="+money);
+            $('#orderRequest_modal').modal('hide');
+        }
+
+    }
+
+    function addOrder(car, email) {
+        $('#orderRequest_modal').modal();
+        orderCar = car;
+        orderTo = email;
+
     }
 </script>
 </html>

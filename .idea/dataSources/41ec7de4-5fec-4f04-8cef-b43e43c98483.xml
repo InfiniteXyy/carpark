@@ -1028,7 +1028,7 @@
       <SequenceIdentity>1</SequenceIdentity>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="254" parent="234" name="order_from">
+    <column id="254" parent="234" name="order_by">
       <Position>2</Position>
       <DataType>char(30)|0</DataType>
       <ColumnKind>normal</ColumnKind>
@@ -1038,40 +1038,52 @@
       <DataType>char(30)|0</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="256" parent="234" name="order_car">
+    <column id="256" parent="234" name="order_ddl">
       <Position>4</Position>
-      <DataType>int(11)|0</DataType>
-      <ColumnKind>normal</ColumnKind>
-    </column>
-    <column id="257" parent="234" name="order_ddl">
-      <Position>5</Position>
       <DataType>date|0</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="258" parent="234" name="order_money">
-      <Position>6</Position>
+    <column id="257" parent="234" name="order_money">
+      <Position>5</Position>
       <DataType>int(11)|0</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <key id="259" parent="234" name="PRIMARY">
+    <column id="258" parent="234" name="order_accepted">
+      <Position>6</Position>
+      <DataType>tinyint(1)|0</DataType>
+      <DefaultExpression>&apos;0&apos;</DefaultExpression>
+      <ColumnKind>normal</ColumnKind>
+    </column>
+    <column id="259" parent="234" name="order_car">
+      <Position>7</Position>
+      <DataType>int(11)|0</DataType>
+      <ColumnKind>normal</ColumnKind>
+    </column>
+    <key id="260" parent="234" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>order_id</ColNames>
       <Primary>1</Primary>
     </key>
-    <column id="260" parent="235" name="user_email">
+    <column id="261" parent="235" name="user_email">
       <Position>1</Position>
       <DataType>char(30)|0</DataType>
+      <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="261" parent="235" name="user_password">
+    <column id="262" parent="235" name="user_password">
       <Position>2</Position>
       <DataType>char(20)|0</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="262" parent="235" name="user_nickname">
+    <column id="263" parent="235" name="user_nickname">
       <Position>3</Position>
       <DataType>char(20)|0</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
+    <key id="264" parent="235" name="PRIMARY">
+      <NameSurrogate>1</NameSurrogate>
+      <ColNames>user_email</ColNames>
+      <Primary>1</Primary>
+    </key>
   </database-model>
 </dataSource>

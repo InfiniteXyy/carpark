@@ -22,9 +22,9 @@
 <div class="card-columns">
 <div class="carditems" id="newsItems" style="margin-top: 0">
     <%
-        GroundUpdater updater = new GroundUpdater();
-        ArrayList<News> news = updater.updateNews();
         String email = request.getParameter("email");
+        GroundUpdater updater = new GroundUpdater(email);
+        ArrayList<News> news = updater.updateNews();
         for (News news1 : news) {
     %>
 
@@ -35,7 +35,7 @@
                 <small class="text-muted">
                     <%=news1.getOwner()%>
                     <%
-                        if (news1.getTarget().contains(email))
+                        if (!news1.getTarget().contains("everyone"))
                     %><i class="fa fa-star" aria-hidden="true"></i>
                     <br>
                     <%=news1.getDate().toString() + "   " + news1.getTime().toString()%>

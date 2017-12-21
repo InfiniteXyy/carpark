@@ -5,6 +5,7 @@ import data.park.Car;
 import data.park.Carport;
 import data.info.Info;
 import data.user.News;
+import data.user.Order;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -17,10 +18,6 @@ public class GroundUpdater {
     public GroundUpdater(String email) {
         sqlConnect = new SqlConnect();
         this.email = email;
-    }
-    public GroundUpdater() {
-        sqlConnect = new SqlConnect();
-        email = "";
     }
 
     public ArrayList<Carport> updateCarports() {
@@ -97,7 +94,7 @@ public class GroundUpdater {
     public ArrayList<News> updateNews() {
         ResultSet resultSet = null;
         sqlConnect.startDB();
-        resultSet = sqlConnect.executeQuery("SELECT news_content, ifnull(user_nickname, user_email), news_time, news_target FROM News JOIN Users WHERE news_owner = user_email ORDER BY news_time DESC LIMIT 10 ");
+        resultSet = sqlConnect.executeQuery("SELECT news_content, ifnull(user_nickname, user_email), news_time, news_target FROM News JOIN Users WHERE news_owner = user_email AND (find_in_set('"+ email +"', news_target) OR find_in_set('everyone', news_target)) ORDER BY news_time DESC LIMIT 10");
         ArrayList<News> newsArrayList = new ArrayList<>();
         try {
             while (resultSet.next()) {
@@ -123,5 +120,28 @@ public class GroundUpdater {
         sqlConnect.endStmt();
         sqlConnect.endDB();
         return info;
+    }
+
+    public ArrayList<Order> updateMyOrder() {
+        ResultSet resultSet = null;
+        sqlConnect.startDB();
+        resultSet = sqlConnect.executeQuery("SELECT ifnull(user_nickname, order_to) AS Name, order_ddl, order_money, order_accepted, car_picture FROM Orders, Cars, Users WHERE order_by = '"+email+"' AND car_id = order_car AND order_to = user_email ORDER BY order_accepted");
+        ArrayList<Order> newsArrayList = new ArrayList<>();
+        try {
+            while (resultSet.next()) {
+                Order order = new Order();
+                order.setOriginator(resultSet.getString(1));
+                order.setDdl(resultSet.getDate(2));
+                order.setMoney(resultSet.getInt(3));
+                order.setAccepted(resultSet.getBoolean(4));
+                order.setCarPic(resultSet.getString(5));
+                newsArrayList.add(order);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        sqlConnect.endStmt();
+        sqlConnect.endDB();
+        return newsArrayList;
     }
 }

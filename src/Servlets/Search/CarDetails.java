@@ -18,11 +18,13 @@ public class CarDetails extends HttpServlet {
     private Car thisCar;
     private String ddl;
     private String toWhom;
+    private boolean isAccepet;
+    private boolean isRent;
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String carId = request.getParameter("carId");
         SqlConnect sqlConnect = new SqlConnect();
         sqlConnect.startDB();
-        ResultSet resultSet = sqlConnect.executeQuery("SELECT car_name, ifnull((SELECT concat(order_to, '&', order_ddl) FROM Orders WHERE car_id = order_car  AND curtime() < order_ddl), 'null') AS isRent, ifnull((SELECT sum(order_money) FROM Orders WHERE car_id = order_car), 0) AS earnedMoney FROM Cars WHERE car_id = "+carId);
+        ResultSet resultSet = sqlConnect.executeQuery("SELECT car_name, ifnull((SELECT concat(order_to, '&', order_ddl, '&', order_accepted) FROM Orders WHERE car_id = order_car  AND curtime() < order_ddl), 'null') AS isRent, ifnull((SELECT sum(order_money) FROM Orders WHERE car_id = order_car AND order_accepted = 1), 0) AS earnedMoney FROM Cars WHERE car_id = "+carId);
         thisCar = new Car();
         try {
             resultSet.next();
@@ -44,7 +46,7 @@ public class CarDetails extends HttpServlet {
 
     private void renderHTML(PrintWriter pw) {
 
-        Boolean isRent = parseRent();
+        isRent = parseRent();
         pw.print("<div class=\"modal-header\">\n" +
                 "        <button type=\"button\" class=\"close\" data-dismiss=\"modal\" aria-label=\"Close\">\n" +
                 "          <span aria-hidden=\"true\">&times;</span>\n" +
@@ -58,6 +60,7 @@ public class CarDetails extends HttpServlet {
             pw.print("<p><b>Rent to:  </b>" + toWhom +"</p>\n");
             pw.print("<p><b>Rent DDL:  </b>" + ddl +"</p>\n");
         }
+        pw.print("<p><b>Status:  </b>" + parseStatus() +"</p>\n");
         pw.print("      </div>\n" +
                 "      <div class=\"modal-footer\">\n" +
                 "        <button type=\"button\" class=\"btn btn-secondary\" data-dismiss=\"modal\">Close</button>\n" +
@@ -72,7 +75,14 @@ public class CarDetails extends HttpServlet {
             String[] temp = thisCar.getRent().split("&");
             toWhom = temp[0];
             ddl = temp[1];
+            isAccepet = (temp[2].equals("1"));
             return true;
         }
+    }
+
+    private String parseStatus() {
+        if (!isRent) return "Available";
+        if (isAccepet) return "Accepted";
+        else return "Waiting";
     }
 }
