@@ -21,7 +21,7 @@
     <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.2/css/bootstrap.min.css" />
     <link rel="stylesheet" href="style/css/styles.css">
     <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" />
-    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+    <script src="https://cdn.bootcss.com/jquery/1.9.1/jquery.min.js"></script>
     <script src="http://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.2/js/bootstrap.min.js"></script>
 </head>
 <body>
@@ -60,13 +60,13 @@
     </div>
 </nav>
 <div class="container-fluid" id="main">
-
     <div class="row row-offcanvas row-offcanvas-left">
         <!-- 侧边栏 -->
         <div class="col-md-3 col-lg-2 sidebar-offcanvas" id="sidebar" role="navigation">
             <ul class="nav nav-pills nav-stacked">
                 <li class="nav-item"><a class="nav-link" data-toggle="modal" data-target="#user_info_model" style="cursor: pointer">昵称设置</a></li>
                 <li class="nav-item"><a class="nav-link" data-toggle="modal" data-target="#connect_model" style="cursor: pointer">联系我</a></li>
+                <li class="nav-item"><a class="nav-link" data-toggle="modal" data-target="#inputTxtModel" style="cursor: pointer">发送信息</a></li>
             </ul>
         </div>
         <div class="col-md-9 col-lg-10 main">
@@ -85,7 +85,7 @@
                 <strong>警告</strong> 与服务器断开连接，请检查你的网络状况！
             </div>
 
-
+            <!-- 显示数字 -->
             <div class="row fade collapse" id="myInfo">
                 <div class="col-md-3 col-sm-6">
                     <div class="card card-inverse card-success">
@@ -135,6 +135,7 @@
 
             <!-- 标签内容 -->
             <div class="tab-content">
+                <!-- 主页 -->
                 <div role="tabpanel" class="tab-pane fade in active" id="home1">
                     <h1>最近消息</h1><br>
                     <iframe src="news_holder.jsp" id="news_holder" frameborder="no" scrolling="no"></iframe>
@@ -170,6 +171,7 @@
                     </div>
                 </div>
 
+                <!-- 个人信息 -->
                 <div role="tabpanel" class="tab-pane fade" id="profile1">
                     <h1>个人信息</h1><br>
                     <div class="col-lg-12">
@@ -185,7 +187,6 @@
                                     <a class="nav-link" href="" data-target="#tab3" data-toggle="tab">我的车位</a>
                                 </li>
                             </ul>
-                            <!--/tabs-->
                             <br>
                             <div id="tabsJustifiedContent" class="tab-content">
                                 <div class="tab-pane fade active in" id="tab1">
@@ -200,7 +201,7 @@
                                                     <img class="card-img-top" src="/imgs/<%=car.getPicture()%>" width="100%">
                                                     <div class="card-block">
                                                         <h4 class="card-title"><%=car.getName()%></h4>
-                                                        <button class="btn btn-primary">查看详情</button>
+                                                        <button class="btn btn-primary" onclick="showCarInfo('<%=car.getName()%>')">查看详情</button>
                                                     </div>
                                                 </div>
                                             </div>
@@ -234,13 +235,14 @@
                     </div><!--/col-->
                 </div>
 
-
+                <!-- 租车请求 -->
                 <div role="tabpanel" class="tab-pane fade" id="messages1">
                     <h1>租车请求</h1><br>
 
 
                 </div>
 
+                <!-- 排行榜 -->
                 <div role="tabpanel" class="tab-pane" id="rank">
                     <h1>排行榜</h1><br><br>
 
@@ -264,6 +266,7 @@
                     </div>
                 </div>
 
+                <!-- 设置 -->
                 <div role="tabpanel" class="tab-pane" id="settings1">
                     <h1>设置</h1><br><br>
 
@@ -287,21 +290,41 @@
     </div>
 </div>
 <br><br><br><br>
-<!-- 底部发送信息 -->
-<nav class="navbar bg-dark navbar-dark" style="position: fixed; bottom: 0; width: 100%">
-    <!-- 2 8 2 布局 -->
-    <div class="col-2"></div>
 
-    <div class="col-8">
-        <input type="text" class="form-control" id="inputTxt" placeholder="按回车发送">
-    </div>
-
-    <div class="col-2"></div>
-</nav>
-
-<!-- 确认信息的模态框 -->
-<div class="modal fade" id="user_info_model">
+<!-- 发送信息模态框 -->
+<div class="modal fade" id="inputTxtModel" tabindex="-1" role="dialog"  aria-hidden="true">
     <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                    <span class="sr-only">Close</span>
+                </button>
+                <h4 class="modal-title" id="exampleModalLabel">New message</h4>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="form-group">
+                        <label for="atNames" class="control-label">@Somebody or @Everyone:</label>
+                        <input type="text" class="form-control" id="atNames">
+                    </div>
+                    <div class="form-group">
+                        <label for="message-text" class="control-label">Message:</label>
+                        <textarea class="form-control" id="message-text"></textarea>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" onclick="send_message()">Send message</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 修改昵称的模态框 -->
+<div class="modal fade" id="user_info_model">
+    <div class="modal-dialog" role="document" aria-hidden="true">
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title" id="myModalLabel">修改昵称</h4>
@@ -337,12 +360,23 @@
 
 </div>
 
-
+<!-- 显示车辆信息的模态框 -->
+<div class="modal fade bd-example-modal-sm" tabindex="-1" role="dialog" id="carinfo_model">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <p id="carName"></p>
+            <p id="carEarnMoney"></p>
+            <p id="carMoney"></p>
+            <p id="carIsRent"></p>
+        </div>
+    </div>
+</div>
 </body>
 <script>
     $("#myInfo").collapse();
     var xmlHttp = new XMLHttpRequest();
     var email = '<%= request.getParameter("inputEmail")%>';
+
     //设置昵称
     document.getElementById('nickNameBtn').addEventListener('click', function() {
         var nickName = document.getElementById("nickNameTxt").value;
@@ -374,9 +408,8 @@
     }, false);
 
     //设置发送信息
-    document.getElementById('inputTxt').addEventListener('keyup', function(e) {
-        if (e.keyCode != 13) {return;}
-        var input = document.getElementById("inputTxt").value;
+    function send_message() {
+        var input = document.getElementById("message-text").value;
         if (input.trim().length != 0) {
             xmlHttp.open("post","/Servlets.AddContent.AddNews", true);
             xmlHttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
@@ -385,7 +418,7 @@
             document.getElementById("inputTxt").value = "";
             autoFitIframe(document.getElementById("news_holder"));
         }
-    }, false);
+    }
 
     //若昵称已存在的警告信息
     function nameExistWarn() {
@@ -420,6 +453,15 @@
         }
     }
 
-
+    //显示车辆信息模态框
+    function showCarInfo(car) {
+        //目前租出状态，累计获得价格，车辆购买价格，车辆照片，车辆名称
+        xmlHttp.open("post","/Servlets.Search.Car", true);
+        xmlHttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+        xmlHttp.send("news="+input +"&email="+ email);
+        $("#news_holder").attr('src', $('#news_holder').attr('src'));
+        document.getElementById("inputTxt").value = "";
+        autoFitIframe(document.getElementById("news_holder"));
+    }
 </script>
 </html>

@@ -933,6 +933,8 @@
     <column id="236" parent="231" name="carport_id">
       <Position>1</Position>
       <DataType>int(11)|0</DataType>
+      <NotNull>1</NotNull>
+      <SequenceIdentity>1</SequenceIdentity>
       <ColumnKind>normal</ColumnKind>
     </column>
     <column id="237" parent="231" name="carport_owner">
@@ -955,89 +957,108 @@
       <DataType>int(11)|0</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="241" parent="232" name="car_id">
-      <Position>1</Position>
-      <DataType>int(11)|0</DataType>
-      <ColumnKind>normal</ColumnKind>
-    </column>
-    <column id="242" parent="232" name="car_picture">
-      <Position>2</Position>
-      <DataType>char(20)|0</DataType>
-      <ColumnKind>normal</ColumnKind>
-    </column>
-    <column id="243" parent="232" name="car_owner">
-      <Position>3</Position>
-      <DataType>char(30)|0</DataType>
-      <ColumnKind>normal</ColumnKind>
-    </column>
-    <column id="244" parent="232" name="car_name">
-      <Position>4</Position>
-      <DataType>char(20)|0</DataType>
-      <ColumnKind>normal</ColumnKind>
-    </column>
-    <column id="245" parent="233" name="news_id">
+    <key id="241" parent="231" name="PRIMARY">
+      <NameSurrogate>1</NameSurrogate>
+      <ColNames>carport_id</ColNames>
+      <Primary>1</Primary>
+    </key>
+    <column id="242" parent="232" name="car_id">
       <Position>1</Position>
       <DataType>int(11)|0</DataType>
       <NotNull>1</NotNull>
       <SequenceIdentity>1</SequenceIdentity>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="246" parent="233" name="news_content">
-      <Position>2</Position>
-      <DataType>varchar(300)|0</DataType>
-      <ColumnKind>normal</ColumnKind>
-    </column>
-    <column id="247" parent="233" name="news_owner">
-      <Position>3</Position>
-      <DataType>char(30)|0</DataType>
-      <ColumnKind>normal</ColumnKind>
-    </column>
-    <column id="248" parent="233" name="news_time">
-      <Position>4</Position>
-      <DataType>datetime|0</DataType>
-      <ColumnKind>normal</ColumnKind>
-    </column>
-    <key id="249" parent="233" name="PRIMARY">
-      <NameSurrogate>1</NameSurrogate>
-      <ColNames>news_id</ColNames>
-      <Primary>1</Primary>
-    </key>
-    <column id="250" parent="234" name="order_id">
-      <Position>1</Position>
-      <DataType>int(11)|0</DataType>
-      <ColumnKind>normal</ColumnKind>
-    </column>
-    <column id="251" parent="234" name="order_from">
-      <Position>2</Position>
-      <DataType>char(30)|0</DataType>
-      <ColumnKind>normal</ColumnKind>
-    </column>
-    <column id="252" parent="234" name="order_to">
-      <Position>3</Position>
-      <DataType>char(30)|0</DataType>
-      <ColumnKind>normal</ColumnKind>
-    </column>
-    <column id="253" parent="234" name="order_car">
-      <Position>4</Position>
-      <DataType>int(11)|0</DataType>
-      <ColumnKind>normal</ColumnKind>
-    </column>
-    <column id="254" parent="234" name="order_ddl">
-      <Position>5</Position>
-      <DataType>date|0</DataType>
-      <ColumnKind>normal</ColumnKind>
-    </column>
-    <column id="255" parent="235" name="user_email">
-      <Position>1</Position>
-      <DataType>char(30)|0</DataType>
-      <ColumnKind>normal</ColumnKind>
-    </column>
-    <column id="256" parent="235" name="user_password">
+    <column id="243" parent="232" name="car_picture">
       <Position>2</Position>
       <DataType>char(20)|0</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="257" parent="235" name="user_nickname">
+    <column id="244" parent="232" name="car_owner">
+      <Position>3</Position>
+      <DataType>char(30)|0</DataType>
+      <ColumnKind>normal</ColumnKind>
+    </column>
+    <column id="245" parent="232" name="car_name">
+      <Position>4</Position>
+      <DataType>char(20)|0</DataType>
+      <ColumnKind>normal</ColumnKind>
+    </column>
+    <key id="246" parent="232" name="PRIMARY">
+      <NameSurrogate>1</NameSurrogate>
+      <ColNames>car_id</ColNames>
+      <Primary>1</Primary>
+    </key>
+    <column id="247" parent="233" name="news_id">
+      <Position>1</Position>
+      <DataType>int(11)|0</DataType>
+      <NotNull>1</NotNull>
+      <SequenceIdentity>1</SequenceIdentity>
+      <ColumnKind>normal</ColumnKind>
+    </column>
+    <column id="248" parent="233" name="news_content">
+      <Position>2</Position>
+      <DataType>varchar(300)|0</DataType>
+      <ColumnKind>normal</ColumnKind>
+    </column>
+    <column id="249" parent="233" name="news_owner">
+      <Position>3</Position>
+      <DataType>char(30)|0</DataType>
+      <ColumnKind>normal</ColumnKind>
+    </column>
+    <column id="250" parent="233" name="news_time">
+      <Position>4</Position>
+      <DataType>datetime|0</DataType>
+      <ColumnKind>normal</ColumnKind>
+    </column>
+    <key id="251" parent="233" name="PRIMARY">
+      <NameSurrogate>1</NameSurrogate>
+      <ColNames>news_id</ColNames>
+      <Primary>1</Primary>
+    </key>
+    <column id="252" parent="234" name="order_id">
+      <Position>1</Position>
+      <DataType>int(11)|0</DataType>
+      <NotNull>1</NotNull>
+      <SequenceIdentity>1</SequenceIdentity>
+      <ColumnKind>normal</ColumnKind>
+    </column>
+    <column id="253" parent="234" name="order_from">
+      <Position>2</Position>
+      <DataType>char(30)|0</DataType>
+      <ColumnKind>normal</ColumnKind>
+    </column>
+    <column id="254" parent="234" name="order_to">
+      <Position>3</Position>
+      <DataType>char(30)|0</DataType>
+      <ColumnKind>normal</ColumnKind>
+    </column>
+    <column id="255" parent="234" name="order_car">
+      <Position>4</Position>
+      <DataType>int(11)|0</DataType>
+      <ColumnKind>normal</ColumnKind>
+    </column>
+    <column id="256" parent="234" name="order_ddl">
+      <Position>5</Position>
+      <DataType>date|0</DataType>
+      <ColumnKind>normal</ColumnKind>
+    </column>
+    <key id="257" parent="234" name="PRIMARY">
+      <NameSurrogate>1</NameSurrogate>
+      <ColNames>order_id</ColNames>
+      <Primary>1</Primary>
+    </key>
+    <column id="258" parent="235" name="user_email">
+      <Position>1</Position>
+      <DataType>char(30)|0</DataType>
+      <ColumnKind>normal</ColumnKind>
+    </column>
+    <column id="259" parent="235" name="user_password">
+      <Position>2</Position>
+      <DataType>char(20)|0</DataType>
+      <ColumnKind>normal</ColumnKind>
+    </column>
+    <column id="260" parent="235" name="user_nickname">
       <Position>3</Position>
       <DataType>char(20)|0</DataType>
       <ColumnKind>normal</ColumnKind>
