@@ -201,7 +201,7 @@
                                                     <img class="card-img-top" src="/imgs/<%=car.getPicture()%>" width="100%">
                                                     <div class="card-block">
                                                         <h4 class="card-title"><%=car.getName()%></h4>
-                                                        <button class="btn btn-primary" onclick="showCarInfo('<%=car.getName()%>')">查看详情</button>
+                                                        <button class="btn btn-primary" onclick="showCarInfo('<%=car.getId()%>')">查看详情</button>
                                                     </div>
                                                 </div>
                                             </div>
@@ -256,9 +256,19 @@
                                 <img class="card-img-top" src="/imgs/<%=car.getPicture()%>" width="100%">
                                 <div class="card-block">
                                     <h4 class="card-title"><%=car.getName()%></h4>
-                                    <p class="card-text">From <%=car.getOwner()%></p>
-                                        <button class="btn btn-primary">联系主人</button>
-                                        <button class="btn btn-secondary">添加到愿望单</button>
+                                    <p class="card-text"><b>Owner: </b> <%=car.getOwner()%></p>
+                                    <%
+                                        if (!car.getEmail().equals(email)) {
+                                    %>
+                                        <button class="btn btn-primary" onclick="contactOwner('<%= car.getEmail()%>')">联系主人</button>
+                                        <button class="btn btn-secondary">发送租车请求</button>
+                                    <%
+                                        } else {
+                                    %>
+                                        <a class="btn btn-secondary" href="#profile1">查看我的车辆</a>
+                                    <%
+                                        }
+                                    %>
                                 </div>
                             </div>
                         </div>
@@ -300,7 +310,7 @@
                     <span aria-hidden="true">&times;</span>
                     <span class="sr-only">Close</span>
                 </button>
-                <h4 class="modal-title" id="exampleModalLabel">New message</h4>
+                <h4 class="modal-title">New message</h4>
             </div>
             <div class="modal-body">
                 <form>
@@ -363,11 +373,7 @@
 <!-- 显示车辆信息的模态框 -->
 <div class="modal fade bd-example-modal-sm" tabindex="-1" role="dialog" id="carinfo_model">
     <div class="modal-dialog modal-sm">
-        <div class="modal-content">
-            <p id="carName"></p>
-            <p id="carEarnMoney"></p>
-            <p id="carMoney"></p>
-            <p id="carIsRent"></p>
+        <div class="modal-content" id="carInfo">
         </div>
     </div>
 </div>
@@ -453,15 +459,37 @@
         }
     }
 
+    //查看车辆详情
+    var CarData = {};//增加本地缓存，防止每次都向服务器发送请求
     //显示车辆信息模态框
     function showCarInfo(car) {
-        //目前租出状态，累计获得价格，车辆购买价格，车辆照片，车辆名称
-        xmlHttp.open("post","/Servlets.Search.Car", true);
-        xmlHttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
-        xmlHttp.send("news="+input +"&email="+ email);
-        $("#news_holder").attr('src', $('#news_holder').attr('src'));
-        document.getElementById("inputTxt").value = "";
-        autoFitIframe(document.getElementById("news_holder"));
+        //目前租出状态，累计获得价格，车辆照片，车辆名称
+        if (CarData[car] != null) {
+            document.getElementById("carInfo").innerHTML=CarData[car];
+            $('#carinfo_model').modal();
+        } else {
+            xmlHttp.open("post","/Servlets.Search.CarDetails", true);
+            xmlHttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+            xmlHttp.onreadystatechange = function () {
+                if (xmlHttp.readyState == 4) {
+                    if (xmlHttp.status == 200) {
+                        var result = xmlHttp.responseText;//接受返回的字符串
+                        document.getElementById("carInfo").innerHTML=result;
+                        $('#carinfo_model').modal();
+                        CarData[car] = result;
+                    } else {
+                        alert("服务器繁忙，请稍候重试！");
+                    }
+                }
+            };
+            xmlHttp.send("carId="+car);
+        }
+    }
+
+    //联系主人
+    function contactOwner(owner) {
+        document.getElementById("atNames").value = owner;
+        $('#inputTxtModel').modal();
     }
 </script>
 </html>

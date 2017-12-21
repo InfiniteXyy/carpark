@@ -1043,22 +1043,27 @@
       <DataType>date|0</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <key id="257" parent="234" name="PRIMARY">
+    <column id="257" parent="234" name="order_money">
+      <Position>6</Position>
+      <DataType>int(11)|0</DataType>
+      <ColumnKind>normal</ColumnKind>
+    </column>
+    <key id="258" parent="234" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>order_id</ColNames>
       <Primary>1</Primary>
     </key>
-    <column id="258" parent="235" name="user_email">
+    <column id="259" parent="235" name="user_email">
       <Position>1</Position>
       <DataType>char(30)|0</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="259" parent="235" name="user_password">
+    <column id="260" parent="235" name="user_password">
       <Position>2</Position>
       <DataType>char(20)|0</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="260" parent="235" name="user_nickname">
+    <column id="261" parent="235" name="user_nickname">
       <Position>3</Position>
       <DataType>char(20)|0</DataType>
       <ColumnKind>normal</ColumnKind>

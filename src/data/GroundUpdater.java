@@ -50,12 +50,13 @@ public class GroundUpdater {
         ResultSet resultSet = null;
         sqlConnect.startDB();
         resultSet = sqlConnect.executeQuery("select " +
-                "car_name, car_picture, ifnull(user_nickname, user_email)  " +
+                "car_name, car_picture, ifnull(user_nickname, user_email), user_email  " +
                 "from Cars, Users WHERE Cars.car_owner = Users.user_email");
         ArrayList<Car> cars = new ArrayList<>();
         try {
             while (resultSet.next()) {
                 Car car = new Car();
+                car.setEmail(resultSet.getString(4));
                 car.setName(resultSet.getString(1));
                 car.setPicture(resultSet.getString(2));
                 car.setOwner(resultSet.getString(3));
@@ -73,7 +74,7 @@ public class GroundUpdater {
          ResultSet resultSet = null;
          sqlConnect.startDB();
          resultSet = sqlConnect.executeQuery("select " +
-                 "car_name, car_picture " +
+                 "car_name, car_picture, car_id " +
                  "from Cars WHERE Cars.car_owner = '" + email + "'");
          ArrayList<Car> cars = new ArrayList<>();
          try {
@@ -81,6 +82,7 @@ public class GroundUpdater {
                  Car car = new Car();
                  car.setName(resultSet.getString(1));
                  car.setPicture(resultSet.getString(2));
+                 car.setId(resultSet.getInt(3));
                  cars.add(car);
              }
          } catch (SQLException e) {
