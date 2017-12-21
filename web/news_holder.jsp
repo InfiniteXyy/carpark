@@ -24,14 +24,20 @@
     <%
         GroundUpdater updater = new GroundUpdater();
         ArrayList<News> news = updater.updateNews();
+        String email = request.getParameter("email");
         for (News news1 : news) {
     %>
+
     <div class="card card-block text-right">
         <blockquote class="card-blockquote">
             <p><%=news1.getContent()%></p>
             <footer>
                 <small class="text-muted">
-                    <%=news1.getOwner()%><br>
+                    <%=news1.getOwner()%>
+                    <%
+                        if (news1.getTarget().contains(email))
+                    %><i class="fa fa-star" aria-hidden="true"></i>
+                    <br>
                     <%=news1.getDate().toString() + "   " + news1.getTime().toString()%>
                 </small>
             </footer>

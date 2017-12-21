@@ -10,6 +10,15 @@ public class News {
     private String content;
     private Date date;
     private Time time;
+    private String target;
+
+    public String getTarget() {
+        return target;
+    }
+
+    public void setTarget(String target) {
+        this.target = target;
+    }
 
     public Date getDate() {
         return date;

@@ -50,7 +50,7 @@ public class GroundUpdater {
         ResultSet resultSet = null;
         sqlConnect.startDB();
         resultSet = sqlConnect.executeQuery("select " +
-                "car_name, car_picture, ifnull(user_nickname, user_email), user_email  " +
+                "car_name, car_picture, ifnull(user_nickname, user_email), user_email,car_id  " +
                 "from Cars, Users WHERE Cars.car_owner = Users.user_email");
         ArrayList<Car> cars = new ArrayList<>();
         try {
@@ -60,6 +60,7 @@ public class GroundUpdater {
                 car.setName(resultSet.getString(1));
                 car.setPicture(resultSet.getString(2));
                 car.setOwner(resultSet.getString(3));
+                car.setId(resultSet.getInt(5));
                 cars.add(car);
             }
         } catch (SQLException e) {
@@ -96,7 +97,7 @@ public class GroundUpdater {
     public ArrayList<News> updateNews() {
         ResultSet resultSet = null;
         sqlConnect.startDB();
-        resultSet = sqlConnect.executeQuery("SELECT news_content, ifnull(user_nickname, user_email), news_time FROM News JOIN Users WHERE news_owner = user_email ORDER BY news_time DESC LIMIT 10 ");
+        resultSet = sqlConnect.executeQuery("SELECT news_content, ifnull(user_nickname, user_email), news_time, news_target FROM News JOIN Users WHERE news_owner = user_email ORDER BY news_time DESC LIMIT 10 ");
         ArrayList<News> newsArrayList = new ArrayList<>();
         try {
             while (resultSet.next()) {
@@ -105,6 +106,7 @@ public class GroundUpdater {
                news.setOwner(resultSet.getString(2));
                news.setTime(resultSet.getTime(3));
                news.setDate(resultSet.getDate(3));
+               news.setTarget(resultSet.getString(4));
                newsArrayList.add(news);
             }
         } catch (SQLException e) {

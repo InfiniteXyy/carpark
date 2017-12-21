@@ -66,7 +66,7 @@
             <ul class="nav nav-pills nav-stacked">
                 <li class="nav-item"><a class="nav-link" data-toggle="modal" data-target="#user_info_model" style="cursor: pointer">昵称设置</a></li>
                 <li class="nav-item"><a class="nav-link" data-toggle="modal" data-target="#connect_model" style="cursor: pointer">联系我</a></li>
-                <li class="nav-item"><a class="nav-link" data-toggle="modal" data-target="#inputTxtModel" style="cursor: pointer">发送信息</a></li>
+                <li class="nav-item"><a class="nav-link" onclick="open_message_box('everyone')" style="cursor: pointer">发送信息</a></li>
             </ul>
         </div>
         <div class="col-md-9 col-lg-10 main">
@@ -137,8 +137,8 @@
             <div class="tab-content">
                 <!-- 主页 -->
                 <div role="tabpanel" class="tab-pane fade in active" id="home1">
-                    <h1>最近消息</h1><br>
-                    <iframe src="news_holder.jsp" id="news_holder" frameborder="no" scrolling="no"></iframe>
+                    <h1>最近消息    <i class="fa fa-refresh" aria-hidden="true" onclick="refreshNews()" style="cursor: pointer"></i></h1><br>
+                    <iframe src="news_holder.jsp?email=<%=email%>" id="news_holder" frameborder="no" scrolling="no"></iframe>
                     <h1>车位租借</h1><br>
                     <div class="col-md-12 col-sm-12">
                         <div class="table-responsive">
@@ -256,16 +256,17 @@
                                 <img class="card-img-top" src="/imgs/<%=car.getPicture()%>" width="100%">
                                 <div class="card-block">
                                     <h4 class="card-title"><%=car.getName()%></h4>
-                                    <p class="card-text"><b>Owner: </b> <%=car.getOwner()%></p>
                                     <%
                                         if (!car.getEmail().equals(email)) {
                                     %>
-                                        <button class="btn btn-primary" onclick="contactOwner('<%= car.getEmail()%>')">联系主人</button>
+                                    <p class="card-text"><b>Owner: </b> <%=car.getOwner()%></p>
+                                        <button class="btn btn-primary" onclick="open_message_box('<%= car.getEmail()%>')">联系主人</button>
                                         <button class="btn btn-secondary">发送租车请求</button>
                                     <%
                                         } else {
                                     %>
-                                        <a class="btn btn-secondary" href="#profile1">查看我的车辆</a>
+                                    <p class="card-text"><b>我的车辆</b></p>
+                                        <a class="btn btn-secondary" onclick="showCarInfo('<%= car.getId()%>')" >查看详情</a>
                                     <%
                                         }
                                     %>
@@ -302,8 +303,8 @@
 <br><br><br><br>
 
 <!-- 发送信息模态框 -->
-<div class="modal fade" id="inputTxtModel" tabindex="-1" role="dialog"  aria-hidden="true">
-    <div class="modal-dialog" role="document">
+<div class="modal fade" id="message_model" >
+    <div class="modal-dialog" role="document" aria-hidden="true">
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -315,7 +316,7 @@
             <div class="modal-body">
                 <form>
                     <div class="form-group">
-                        <label for="atNames" class="control-label">@Somebody or @Everyone:</label>
+                        <label for="atNames" class="control-label">@Somebody split with ','</label>
                         <input type="text" class="form-control" id="atNames">
                     </div>
                     <div class="form-group">
@@ -325,6 +326,7 @@
                 </form>
             </div>
             <div class="modal-footer">
+                <span id="wrongEmail" style="display: none;"></span>
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                 <button type="button" class="btn btn-primary" onclick="send_message()">Send message</button>
             </div>
@@ -413,19 +415,41 @@
         }
     }, false);
 
+
     //设置发送信息
     function send_message() {
         var input = document.getElementById("message-text").value;
-        if (input.trim().length != 0) {
+        var target = document.getElementById("atNames").value;
+        if (input.trim().length != 0 && target.trim().length != 0) {
             xmlHttp.open("post","/Servlets.AddContent.AddNews", true);
             xmlHttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
-            xmlHttp.send("news="+input +"&email="+ email);
-            $("#news_holder").attr('src', $('#news_holder').attr('src'));
-            document.getElementById("inputTxt").value = "";
-            autoFitIframe(document.getElementById("news_holder"));
+            xmlHttp.onreadystatechange = function () {
+                if (xmlHttp.readyState == 4) {
+                    if (xmlHttp.status == 200) {
+                        var result = xmlHttp.responseText;//接受返回的字符串
+                        if (result=="nouser") {
+                            document.getElementById('atNames').focus();
+                            document.getElementById("wrongEmail").innerHTML = '<b style="color:#cd5e3c"> 无效用户名或错误格式！</b>';
+                            $("#wrongEmail").fadeIn(100);
+                        } else {
+                            $("#message_model").modal('hide');
+                            document.getElementById("message-text").value = "";
+                            $("#wrongEmail").fadeOut(100);
+                            refreshNews();
+                        }
+                    } else {
+                        alert("服务器繁忙，请稍候重试！");
+                    }
+                }
+            };
+            xmlHttp.send("news="+input +"&email="+ email + "&target="+target);
         }
     }
 
+    function refreshNews() {
+        $("#news_holder").attr('src', $('#news_holder').attr('src'));
+        autoFitIframe(document.getElementById("news_holder"));
+    }
     //若昵称已存在的警告信息
     function nameExistWarn() {
         document.getElementById('nameExistWarn').innerHTML = '<b style="color:#cd5e3c"> 昵称已存在！</b>';
@@ -486,10 +510,10 @@
         }
     }
 
-    //联系主人
-    function contactOwner(owner) {
+    //打开发送信息的页面
+    function open_message_box(owner) {
         document.getElementById("atNames").value = owner;
-        $('#inputTxtModel').modal();
+        $('#message_model').modal();
     }
 </script>
 </html>
