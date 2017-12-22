@@ -23,7 +23,8 @@ public class GroundUpdater {
     public ArrayList<Carport> updateCarports() {
         ResultSet resultSet;
         sqlConnect.startDB();
-        resultSet = sqlConnect.executeQuery("select carport_id, ifnull(user_nickname, user_email), carport_state, carport_date, carport_price from Carports, Users WHERE carport_owner = user_email");
+        resultSet = sqlConnect.executeQuery("SELECT carport_id, carport_owner, carport_state, carport_leftnum, carport_price\n" +
+                "FROM Carports");
         ArrayList<Carport> carports = new ArrayList<>();
         try {
             while (resultSet.next()) {
@@ -31,7 +32,7 @@ public class GroundUpdater {
                 carport.setId(resultSet.getInt(1));
                 carport.setOwner(resultSet.getString(2));
                 carport.setState(resultSet.getString(3));
-                carport.setDate(resultSet.getDate(4));
+                carport.setLeftnum(resultSet.getInt(4));
                 carport.setPrice(resultSet.getInt(5));
                 carports.add(carport);
             }
@@ -125,23 +126,55 @@ public class GroundUpdater {
     public ArrayList<Order> updateMyOrder() {
         ResultSet resultSet = null;
         sqlConnect.startDB();
-        resultSet = sqlConnect.executeQuery("SELECT ifnull(user_nickname, order_to) AS Name, order_ddl, order_money, order_accepted, car_picture FROM Orders, Cars, Users WHERE order_by = '"+email+"' AND car_id = order_car AND order_to = user_email ORDER BY order_accepted");
-        ArrayList<Order> newsArrayList = new ArrayList<>();
+        resultSet = sqlConnect.executeQuery("SELECT order_to, order_ddl, order_money, order_accepted, car_picture, car_id\n" +
+                "FROM Orders, Cars\n" +
+                "WHERE order_by = '"+ email +"'\n" +
+                "AND car_id = order_car ORDER BY order_accepted");
+        ArrayList<Order> arrayList = new ArrayList<>();
         try {
             while (resultSet.next()) {
                 Order order = new Order();
-                order.setOriginator(resultSet.getString(1));
+                order.setTo(resultSet.getString(1));
                 order.setDdl(resultSet.getDate(2));
                 order.setMoney(resultSet.getInt(3));
                 order.setAccepted(resultSet.getBoolean(4));
                 order.setCarPic(resultSet.getString(5));
-                newsArrayList.add(order);
+                order.setOrder_car(resultSet.getInt(6));
+                arrayList.add(order);
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
         sqlConnect.endStmt();
         sqlConnect.endDB();
-        return newsArrayList;
+        return arrayList;
     }
+
+    public ArrayList<Order> updateTheirOrder() {
+        ResultSet resultSet = null;
+        sqlConnect.startDB();
+        resultSet = sqlConnect.executeQuery("SELECT order_by, order_ddl, order_money, car_picture, order_id\n" +
+                "FROM Orders, Cars\n" +
+                "WHERE order_to = '"+email+"'\n" +
+                "AND car_id = order_car AND order_accepted = 0");
+        ArrayList<Order> arrayList = new ArrayList<>();
+        try {
+            while (resultSet.next()) {
+                Order order = new Order();
+                order.setFrom(resultSet.getString(1));
+                order.setDdl(resultSet.getDate(2));
+                order.setMoney(resultSet.getInt(3));
+                order.setCarPic(resultSet.getString(4));
+                order.setId(resultSet.getInt(5));
+                arrayList.add(order);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        sqlConnect.endStmt();
+        sqlConnect.endDB();
+        return arrayList;
+    }
+
+
 }

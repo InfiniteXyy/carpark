@@ -3,8 +3,20 @@ package data.user;
 import java.sql.Date;
 
 public class Order {
-    private String originator;
-    private String order_car;
+    private int id;
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    private String from;
+    private String to;
+
+    private int order_car;
     private Date ddl;
     private int money;
     private boolean isAccepted;
@@ -18,20 +30,27 @@ public class Order {
         this.carPic = carPic;
     }
 
-    public String getOriginator() {
-        return originator;
+    public String getFrom() {
+        return from;
     }
 
-    public void setOriginator(String originator) {
-        this.originator = originator;
+    public void setFrom(String from) {
+        this.from = from;
     }
 
+    public String getTo() {
+        return to;
+    }
 
-    public String getOrder_car() {
+    public void setTo(String to) {
+        this.to = to;
+    }
+
+    public int getOrder_car() {
         return order_car;
     }
 
-    public void setOrder_car(String order_car) {
+    public void setOrder_car(int order_car) {
         this.order_car = order_car;
     }
 

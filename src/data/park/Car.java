@@ -1,5 +1,10 @@
 package data.park;
 
+import connecter.SqlConnect;
+
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
 public class Car {
     private int id;
     private String picture;
@@ -66,6 +71,21 @@ public class Car {
     }
 
     public Car() {
+    }
 
+    public static String getName(int i) {
+        String name = "error";
+        SqlConnect sqlConnect = new SqlConnect();
+        sqlConnect.startDB();
+        ResultSet resultSet = sqlConnect.executeQuery("SELECT car_name FROM Cars WHERE car_id = " + i);
+        try {
+            resultSet.next();
+            name = resultSet.getString(1);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        sqlConnect.endStmt();
+        sqlConnect.endDB();
+        return name;
     }
 }

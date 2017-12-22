@@ -92,10 +92,12 @@ public class SqlConnect {
     }
 
     public void updateQuery(String sql) {
+
         try {
             statement = conn.createStatement();
             statement.execute(sql);
         } catch (SQLException e) {
+            System.out.println("错误代码SQL"  + sql);
             e.printStackTrace();
         }
     }

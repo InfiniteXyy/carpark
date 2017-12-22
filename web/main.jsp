@@ -147,10 +147,11 @@
                                 <thead class="thead-inverse">
                                 <tr>
                                     <th>#</th>
-                                    <th>卖家</th>
+                                    <th>发售商</th>
                                     <th>小区</th>
-                                    <th>租借</th>
+                                    <th>剩余位置</th>
                                     <th>价格</th>
+                                    <th>租借</th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -162,10 +163,19 @@
                                     <td><%= rs.getId()%></td>
                                     <td><%= rs.getOwner()%></td>
                                     <td><%= rs.getState()%></td>
-                                    <td><%= rs.getDate()%></td>
-                                    <td><%= rs.getPrice()%></td>
+                                    <td><%= rs.getLeftnum()%></td>
+                                    <td><%= "￥"+rs.getPrice()%></td>
+                                    <%
+                                        if (!rs.isRentBy(email)) {
+                                    %>
+                                    <td id="rentParkBtn<%=rs.getId()%>"><button class="btn btn-primary" onclick="orderCarpark('<%=rs.getId()%>')">确认租借</button></td>
+                                    <%
+                                        } else {
+                                    %>
+                                    <td id="rentParkBtn<%=rs.getId()%>"><button class="btn btn-secondary" disabled>已经拥有</button></td>
+
                                 </tr>
-                                <%}%>
+                                <%}}%>
                                 </tbody>
                             </table>
                         </div>
@@ -212,32 +222,35 @@
                                 </div>
 
                                 <div class="tab-pane fade" id="tab2">
+                                    <%
+                                        ArrayList<Order> myRequests = updater.updateMyOrder();
+                                        for (Order myRequest : myRequests) {
+                                            if (myRequest.isAccepted()) {
+                                    %>
                                     <div class="row">
                                         <div class="col-sm-7">
-                                            <h4>Extreme car</h4><br><br>
-                                            <p><b>所属者：</b>xyy's son</p>
-                                            <p><b>状态：</b>未通过</p>
+                                            <h4><%=Car.getName(myRequest.getOrder_car())%></h4><br><br>
+                                            <p><b>所属者：</b><%=myRequest.getTo()%></p>
+                                            <p><b>期限：</b><%=myRequest.getDdl()%></p>
                                         </div>
-                                        <div class="col-sm-5"><img src="/imgs/car5.jpg" height="200" class="pull-right img-responsive img-rounded"></div>
+                                        <div class="col-sm-5"><img src="/imgs/<%=myRequest.getCarPic()%>" height="200" class="pull-right img-responsive img-rounded"></div>
                                     </div>
                                     <hr>
-                                    <div class="row">
-                                        <div class="col-sm-7">
-                                            <h4>Extreme car</h4><br><br>
-                                            <p><b>所属者：</b>xyy's son</p>
-                                            <p><b>状态：</b>未通过</p>
-                                        </div>
-                                        <div class="col-sm-5"><img src="/imgs/car6.jpg" height="200" class="pull-right img-responsive img-rounded"></div>
-                                    </div>
-                                    <hr>
+                                    <%
+                                            }
+                                        }
+                                    %>
                                 </div>
 
                                 <div class="tab-pane fade" id="tab3">
-                                    <div class="list-group">
-                                        <a href="" class="list-group-item"><span class="pull-right label label-info label-pill">44</span> <code>.panel</code> is now <code>.card</code></a>
-                                        <a href="" class="list-group-item"><span class="pull-right label label-info label-pill">8</span> <code>.nav-justified</code> is deprecated</a>
-                                        <a href="" class="list-group-item"><span class="pull-right label label-info label-pill">23</span> <code>.badge</code> is now <code>.label-pill</code></a>
-                                        <a href="" class="list-group-item text-muted">Message n..</a>
+                                    <div class="list-group" id="carportCancelList">
+                                        <%
+                                            for (Carport carport : carports) { if (carport.isRentBy(email)) {
+                                        %>
+                                        <p class="list-group-item" id="carportCancelBtn<%=carport.getId()%>"><button class="pull-right btn btn-info btn-sm" onclick="cancelCarpark('<%=carport.getId()%>')">取消缴费</button> <b><%=carport.getState() %></b> <%=carport.getOwner()%> </p>
+                                        <%
+                                            }}
+                                        %>
                                     </div>
                                 </div>
                             </div>
@@ -249,13 +262,45 @@
                 <!-- 租车请求 -->
                 <div role="tabpanel" class="tab-pane fade" id="messages1">
                     <h1>租车请求</h1><br><br>
+
+                    <h2>待处理的请求</h2>
+                    <div class="col-md-12 col-sm-12">
+                        <div class="table-responsive">
+                            <table class="table table-striped">
+                                <thead class="thead-inverse">
+                                <tr>
+                                    <th>From</th>
+                                    <th>申请时限</th>
+                                    <th>提供价格</th>
+                                    <th>图片</th>
+                                    <th>确认</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <%
+                                    ArrayList<Order> theirRequest = updater.updateTheirOrder();
+                                    for (Order tRequest: theirRequest) {
+                                %>
+                                <tr id="<%=tRequest.getId()%>">
+                                    <td><%=tRequest.getFrom()%></td>
+                                    <td><%=tRequest.getDdl()%></td>
+                                    <td><%=tRequest.getMoney()%></td>
+                                    <td><img class="carpic" src="/imgs/<%=tRequest.getCarPic()%>" height="50px" ></td>
+                                    <td><button class="btn btn-secondary" onclick="commitRequest('<%=tRequest.getId()%>')">确认</button></td>
+                                </tr>
+                                <%}%>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <br><br><br>
                     <h2>我的请求</h2><br>
                     <div class="col-md-12 col-sm-12">
                         <div class="table-responsive">
                             <table class="table table-striped">
                                 <thead class="thead-inverse">
                                 <tr>
-                                    <th>租借者</th>
+                                    <th>To</th>
                                     <th>租借时限</th>
                                     <th>价格</th>
                                     <th>状态</th>
@@ -264,12 +309,10 @@
                                 </thead>
                                 <tbody>
                                 <%
-
-                                    ArrayList<Order> myRequests = updater.updateMyOrder();
                                     for (Order myRequest: myRequests) {
                                 %>
                                 <tr>
-                                    <td><%=myRequest.getOriginator()%></td>
+                                    <td><%=myRequest.getTo()%></td>
                                     <td><%=myRequest.getDdl()%></td>
                                     <td><%=myRequest.getMoney()%></td>
                                     <td><%=myRequest.renderAccepted()%></td>
@@ -280,9 +323,6 @@
                             </table>
                         </div>
                     </div>
-                    <hr>
-                    <h2>待处理的请求</h2>
-
                 </div>
 
                 <!-- 排行榜 -->
@@ -453,6 +493,9 @@
     </div>
 </div>
 
+
+
+
 </body>
 <script>
     $("#myInfo").collapse();
@@ -596,9 +639,9 @@
     function send_order() {
         var ddl = document.getElementById("order_ddl").value;
         var money = document.getElementById("order_money").value;
-        if (isNaN(money)) {
+        if (isNaN(money) || money == "") {
             document.getElementById("order_money").value = "";
-            money = document.getElementById("order_money").blur();
+            document.getElementById("order_money").blur();
             alert("金额输入错误！请输入纯数字！");
         } else {
             xmlHttp.open("post","/Servlets.AddContent.AddOrder", true);
@@ -614,6 +657,30 @@
         orderCar = car;
         orderTo = email;
 
+    }
+
+    //同意租车请求
+    function commitRequest(id) {
+        xmlHttp.open("post","/Servlets.Commit.OrderCommit", true);
+        xmlHttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+        xmlHttp.send("orderId="+id);
+        $("#"+id).remove();
+    }
+
+    //提交停车场的租借请求
+    function orderCarpark(id) {
+        xmlHttp.open("post","/Servlets.AddContent.AddParkOrder", true);
+        xmlHttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+        xmlHttp.send("type=add&orderId="+id + "&orderBy="+email);
+        document.getElementById("rentParkBtn"+id).innerHTML = '<button class="btn btn-secondary" disabled>已经拥有</button>'
+    }
+
+    function cancelCarpark(id) {
+        xmlHttp.open("post","/Servlets.AddContent.AddParkOrder", true);
+        xmlHttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+        xmlHttp.send("type=cancel&orderId="+id + "&orderBy="+email);
+        document.getElementById("rentParkBtn"+id).innerHTML = '<td id="rentParkBtn'+id+'"><button class="btn btn-primary" onclick="orderCarpark('+id+')">确认租借</button></td>\n'
+        document.getElementById("carportCancelBtn"+id).remove();
     }
 </script>
 </html>

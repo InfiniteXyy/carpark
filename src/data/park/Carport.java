@@ -1,13 +1,16 @@
 package data.park;
 
-import java.io.Serializable;
-import java.util.Date;
 
-public class Carport implements Serializable{
+import connecter.SqlConnect;
+
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
+public class Carport{
     private int id;
     private String owner;
     private String state;
-    private Date date;
+    private int leftnum;
     private int price;
 
     public int getId() {
@@ -34,12 +37,12 @@ public class Carport implements Serializable{
         this.state = state;
     }
 
-    public Date getDate() {
-        return date;
+    public int getLeftnum() {
+        return leftnum;
     }
 
-    public void setDate(Date date) {
-        this.date = date;
+    public void setLeftnum(int leftnum) {
+        this.leftnum = leftnum;
     }
 
     public int getPrice() {
@@ -50,16 +53,22 @@ public class Carport implements Serializable{
         this.price = price;
     }
 
-    public Carport() {
-
-    }
-
-    public Carport(int id, String owner, String state, Date date, int price) {
-
-        this.id = id;
-        this.owner = owner;
-        this.state = state;
-        this.date = date;
-        this.price = price;
+    public boolean isRentBy(String email) {
+        SqlConnect sqlConnect = new SqlConnect();
+        sqlConnect.startDB();
+        boolean status = false;
+        ResultSet resultSet = sqlConnect.executeQuery("SELECT 'isRent' AS status \n" +
+                "FROM CarparkOrders \n" +
+                "WHERE order_by = '"+email+"' AND order_park = "+id );
+        try {
+            if (resultSet.next()) {
+                status = true;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        sqlConnect.endStmt();
+        sqlConnect.endDB();
+        return status;
     }
 }
