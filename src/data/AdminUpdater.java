@@ -37,6 +37,7 @@ public class AdminUpdater {
         sqlConnect.startDB();
         ResultSet resultSet = sqlConnect.executeQuery("SELECT carport_id, carport_owner, carport_state, carport_price, carport_leftnum FROM Carports");
         try {
+
             while (resultSet.next()) {
                 Carport carport = new Carport();
                 carport.setId(resultSet.getInt(1));
