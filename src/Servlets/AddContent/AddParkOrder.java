@@ -22,10 +22,13 @@ public class AddParkOrder extends HttpServlet {
             sqlConnect.updateQuery("INSERT INTO CarparkOrders\n" +
                     "(order_park, order_time, order_by) VALUES\n" +
                     "  ("+id+", CURDATE(), '"+email+"')");
+            sqlConnect.updateQuery("UPDATE Carports SET carport_leftnum = carport_leftnum - 1 WHERE carport_id = "+id);
         } else {
             sqlConnect.updateQuery("DELETE FROM CarparkOrders\n" +
                     "WHERE order_park = "+id+"\n" +
                     "AND order_by = '"+email+"'");
+            sqlConnect.updateQuery("UPDATE Carports SET carport_leftnum = carport_leftnum + 1 WHERE carport_id = "+id);
+
         }
         sqlConnect.endStmt();
         sqlConnect.endDB();

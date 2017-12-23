@@ -1110,7 +1110,13 @@
       <DataType>char(20)|0</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <key id="270" parent="236" name="PRIMARY">
+    <column id="270" parent="236" name="user_isAdmin">
+      <Position>4</Position>
+      <DataType>tinyint(1)|0</DataType>
+      <DefaultExpression>&apos;0&apos;</DefaultExpression>
+      <ColumnKind>normal</ColumnKind>
+    </column>
+    <key id="271" parent="236" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>user_email</ColNames>
       <Primary>1</Primary>

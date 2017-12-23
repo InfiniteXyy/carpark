@@ -65,9 +65,9 @@
         <!-- 侧边栏 -->
         <div class="col-md-3 col-lg-2 sidebar-offcanvas" id="sidebar" role="navigation">
             <ul class="nav nav-pills nav-stacked">
-                <li class="nav-item"><a class="nav-link" data-toggle="modal" data-target="#user_info_model" style="cursor: pointer">昵称设置</a></li>
-                <li class="nav-item"><a class="nav-link" data-toggle="modal" data-target="#connect_model" style="cursor: pointer">联系我</a></li>
+                <li class="nav-item"><a class="nav-link" data-toggle="modal" data-target="#user_info_modal" style="cursor: pointer">昵称设置</a></li>
                 <li class="nav-item"><a class="nav-link" onclick="open_message_box('everyone')" style="cursor: pointer">发送信息</a></li>
+                <li class="nav-item"><a class="nav-link" data-toggle="modal" data-target="#connect_modal" style="cursor: pointer">联系我</a></li>
             </ul>
         </div>
         <div class="col-md-9 col-lg-10 main">
@@ -189,7 +189,7 @@
                         <div class="card card-default card-block">
                             <ul id="tabsJustified" class="nav nav-tabs nav-justified">
                                 <li class="nav-item">
-                                    <a class="nav-link active" href="" data-target="#tab1" data-toggle="tab">我的车辆</a>
+                                    <a class="nav-link active" href="" data-target="#tab1" data-toggle="tab">我的车辆  <i class="fa fa-plus" aria-hidden="true" data-toggle="modal" data-target="#addCar_modal"></i></a>
                                 </li>
                                 <li class="nav-item">
                                     <a class="nav-link" href="" data-target="#tab2" data-toggle="tab">我的租借</a>
@@ -436,7 +436,7 @@
 </div>
 
 <!-- 联系我们的模态框 -->
-<div class="modal fade" id="connect_model">
+<div class="modal fade" id="connect_modal">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-body">
@@ -493,7 +493,41 @@
     </div>
 </div>
 
-
+<!-- 增加新车的模态框 -->
+<div class="modal fade" id="addCar_modal">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                    <span class="sr-only">Close</span>
+                </button>
+                <h4 class="modal-title" >New Car</h4>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="form-group">
+                        <label for="order_ddl" class="control-label">SET name:</label>
+                        <input type="text" class="form-control" id="carName">
+                    </div>
+                    <div class="form-group">
+                        <label for="order_money" class="control-label">SET pic:</label>
+                        <select name="cars" class="form-control">
+                            <option value="1">car1</option>
+                            <option value="2">car2</option>
+                            <option value="3">car3</option>
+                            <option value="4">car4</option>
+                        </select>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" onclick="addCar()">Add</button>
+            </div>
+        </div>
+    </div>
+</div>
 
 
 </body>
@@ -514,7 +548,7 @@
                         var result = xmlHttp.responseText;//接受返回的字符串
                         if (result == "ok") {
                             document.getElementById("nickName").innerText=nickName;
-                            $('#user_info_model').modal('hide');
+                            $('#user_info_modal').modal('hide');
                         } else {
                             nameExistWarn();
                         }
@@ -681,6 +715,15 @@
         xmlHttp.send("type=cancel&orderId="+id + "&orderBy="+email);
         document.getElementById("rentParkBtn"+id).innerHTML = '<td id="rentParkBtn'+id+'"><button class="btn btn-primary" onclick="orderCarpark('+id+')">确认租借</button></td>\n'
         document.getElementById("carportCancelBtn"+id).remove();
+    }
+
+    function addCar() {
+        var name = document.getElementById("carName").value;
+        var pic = document.getElementsByName("cars")[0].value;
+        xmlHttp.open("post","/Servlets.AddContent.AddCar", true);
+        xmlHttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+        xmlHttp.send("name="+ name + "&pic="+ pic + "&owner="+email);
+        $("#addCar_modal").modal("hide");
     }
 </script>
 </html>

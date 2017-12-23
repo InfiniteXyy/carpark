@@ -19,6 +19,7 @@ public class Ground extends HttpServlet {
         sqlConnect.startDB();
         ResultSet resultSet = sqlConnect.executeQuery("SELECT user_nickname FROM Users " +
                 "WHERE user_email = '" + email +"'");
+        boolean Admin = request.getParameter("isAdmin").equals("true");
         String name = email;
         try {
             resultSet.next();
@@ -26,15 +27,30 @@ public class Ground extends HttpServlet {
             if ((name = resultSet.getString(1)) == null) {
                 name = email;
             }
-
+            if(Admin) {
+                ResultSet resultSet1 = sqlConnect.executeQuery("SELECT user_isAdmin FROM Users WHERE user_email='"+email+"'");
+                resultSet1.next();
+                if (resultSet1.getInt(1) == 0) {
+                    Admin = false;
+                }
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         }
 
-        RequestDispatcher dispatcher;
-        dispatcher = request.getRequestDispatcher("main.jsp");
-        request.setAttribute("name", name);
-        dispatcher.forward(request, response);
+        sqlConnect.endStmt();
+        sqlConnect.endDB();
+
+        if (Admin) {
+            RequestDispatcher dispatcher;
+            dispatcher = request.getRequestDispatcher("AdminMain.jsp");
+            dispatcher.forward(request, response);
+        } else {
+            RequestDispatcher dispatcher;
+            dispatcher = request.getRequestDispatcher("main.jsp");
+            request.setAttribute("name", name);
+            dispatcher.forward(request, response);
+        }
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
