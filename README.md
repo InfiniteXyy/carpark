@@ -1,11 +1,11 @@
 # A Simple Car Manager by Java
 
 
-Used `jsp` `ajax` `servlet` `iframe`
+**Used** `jsp` `ajax` `servlet` `iframe`
 
-Framework `bootstrap`
+**Framework** `bootstrap`
 
-Server `Tomcat` 
+**Server** `Tomcat` 
 
 ### Achieved features
 
