@@ -1,6 +1,7 @@
 package data;
 
 import connecter.SqlConnect;
+import data.park.Carport;
 import data.user.User;
 
 import java.sql.ResultSet;
@@ -21,6 +22,30 @@ public class AdminUpdater {
                 user.setPassword(resultSet.getString(3));
                 user.setAdmin(resultSet.getInt(4)==1);
                 arrayList.add(user);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        sqlConnect.endStmt();
+        sqlConnect.endDB();
+        return arrayList;
+    }
+
+    public ArrayList<Carport> updateParks() {
+        ArrayList<Carport> arrayList = new ArrayList<>();
+        SqlConnect sqlConnect = new SqlConnect();
+        sqlConnect.startDB();
+        ResultSet resultSet = sqlConnect.executeQuery("SELECT carport_id, carport_owner, carport_state, carport_price, carport_leftnum FROM Carports");
+        try {
+            while (resultSet.next()) {
+                Carport carport = new Carport();
+                carport.setId(resultSet.getInt(1));
+                carport.setOwner(resultSet.getString(2));
+                carport.setState(resultSet.getString(3));
+                carport.setPrice(resultSet.getInt(4));
+                carport.setLeftnum(resultSet.getInt(5));
+                arrayList.add(carport);
+
             }
         } catch (SQLException e) {
             e.printStackTrace();

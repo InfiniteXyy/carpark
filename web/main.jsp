@@ -507,11 +507,11 @@
             <div class="modal-body">
                 <form>
                     <div class="form-group">
-                        <label for="order_ddl" class="control-label">SET name:</label>
+                        <label class="control-label">SET name:</label>
                         <input type="text" class="form-control" id="carName">
                     </div>
                     <div class="form-group">
-                        <label for="order_money" class="control-label">SET pic:</label>
+                        <label class="control-label">SET pic:</label>
                         <select name="cars" class="form-control">
                             <option value="1">car1</option>
                             <option value="2">car2</option>

@@ -44,4 +44,9 @@ public class User implements Serializable{
     public void setAdmin(boolean admin) {
         isAdmin = admin;
     }
+
+    public String renderNickname() {
+        if (nickname == null) return "-";
+        else return nickname;
+    }
 }
